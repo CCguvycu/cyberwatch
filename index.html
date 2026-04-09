@@ -2042,20 +2042,20 @@
                 </div>
                 <div class="stats-bar">
                     <div class="stat-card">
-                        <div class="stat-value" id="statCves">847</div>
-                        <div class="stat-label">CVEs Today</div>
+                        <div class="stat-value" id="statCves">—</div>
+                        <div class="stat-label">CVEs (7 days)</div>
                     </div>
                     <div class="stat-card">
-                        <div class="stat-value" id="statBreaches">12</div>
-                        <div class="stat-label">Breaches</div>
+                        <div class="stat-value" id="statHN">—</div>
+                        <div class="stat-label">HN Stories</div>
                     </div>
                     <div class="stat-card">
-                        <div class="stat-value" id="statRansomware">3</div>
-                        <div class="stat-label">Ransomware</div>
+                        <div class="stat-value" id="statReddit">—</div>
+                        <div class="stat-label">Reddit Posts</div>
                     </div>
                     <div class="stat-card">
-                        <div class="stat-value" id="statPatches">156</div>
-                        <div class="stat-label">Patches</div>
+                        <div class="stat-value" id="statTotal">—</div>
+                        <div class="stat-label">Total Feed</div>
                     </div>
                 </div>
             </div>
@@ -2140,14 +2140,14 @@ Learn, explore, and stay informed. <span class="post-tag">#CyberWatch</span> <sp
     ];
 
     const SHORTS = [
-        { title: "SQL Injection\nin 60 Seconds", icon: "&#x1F4BE;", color: "linear-gradient(135deg, #ff4757, #c44569)", views: "2.3M", category: "programming" },
-        { title: "Phishing Red\nFlags to Know", icon: "&#x1F3A3;", color: "linear-gradient(135deg, #ffa502, #ff6b6b)", views: "1.8M", category: "cyber" },
-        { title: "Lock Your\nDigital Life", icon: "&#x1F512;", color: "linear-gradient(135deg, #a855f7, #6c5ce7)", views: "3.1M", category: "privacy" },
-        { title: "Nmap Basics\nfor Beginners", icon: "&#x1F4E1;", color: "linear-gradient(135deg, #00d4ff, #0984e3)", views: "1.2M", category: "tools" },
-        { title: "What is\nZero Trust?", icon: "&#x1F6E1;", color: "linear-gradient(135deg, #2ed573, #26de81)", views: "890K", category: "cyber" },
-        { title: "DHS: What\nThey Do", icon: "&#x1F3DB;", color: "linear-gradient(135deg, #ff6b9d, #ff4757)", views: "567K", category: "homeland" },
-        { title: "XSS Attacks\nExplained", icon: "&#x1F41B;", color: "linear-gradient(135deg, #f1c40f, #ffa502)", views: "1.5M", category: "programming" },
-        { title: "OSINT Tools\nStarter Kit", icon: "&#x1F50E;", color: "linear-gradient(135deg, #e17055, #d63031)", views: "2.0M", category: "osint" }
+        { title: "SQL Injection\nin 60 Seconds", icon: "&#x1F4BE;", color: "linear-gradient(135deg, #ff4757, #c44569)", views: "Lesson", category: "programming" },
+        { title: "Phishing Red\nFlags to Know", icon: "&#x1F3A3;", color: "linear-gradient(135deg, #ffa502, #ff6b6b)", views: "Lesson", category: "cyber" },
+        { title: "Lock Your\nDigital Life", icon: "&#x1F512;", color: "linear-gradient(135deg, #a855f7, #6c5ce7)", views: "Lesson", category: "privacy" },
+        { title: "Nmap Basics\nfor Beginners", icon: "&#x1F4E1;", color: "linear-gradient(135deg, #00d4ff, #0984e3)", views: "Lesson", category: "tools" },
+        { title: "What is\nZero Trust?", icon: "&#x1F6E1;", color: "linear-gradient(135deg, #2ed573, #26de81)", views: "Lesson", category: "cyber" },
+        { title: "DHS: What\nThey Do", icon: "&#x1F3DB;", color: "linear-gradient(135deg, #ff6b9d, #ff4757)", views: "Lesson", category: "homeland" },
+        { title: "XSS Attacks\nExplained", icon: "&#x1F41B;", color: "linear-gradient(135deg, #f1c40f, #ffa502)", views: "Lesson", category: "programming" },
+        { title: "OSINT Tools\nStarter Kit", icon: "&#x1F50E;", color: "linear-gradient(135deg, #e17055, #d63031)", views: "Lesson", category: "osint" }
     ];
 
     let TRENDING = [];
@@ -3852,19 +3852,16 @@ Learn, explore, and stay informed. <span class="post-tag">#CyberWatch</span> <sp
         return n.toString();
     }
 
-    // ═══ LIVE COUNTER ANIMATION ═══
-    function animateCounters() {
-        const counters = { statCves: 847, statBreaches: 12, statRansomware: 3, statPatches: 156 };
-        Object.entries(counters).forEach(([id, target]) => {
-            const el = document.getElementById(id);
-            if (!el) return;
-            // Randomly fluctuate
-            setInterval(() => {
-                const delta = Math.floor(Math.random() * 3) - 1;
-                const current = parseInt(el.textContent) || target;
-                el.textContent = Math.max(0, current + delta);
-            }, 3000 + Math.random() * 5000);
-        });
+    function updateStatCards() {
+        const hn = POSTS.filter(p => p.handle === '@hackernews').length;
+        const reddit = POSTS.filter(p => p.handle === '@r_netsec' || p.handle === '@r_cybersecurity').length;
+        const total = POSTS.length;
+        const statHN = document.getElementById('statHN');
+        const statReddit = document.getElementById('statReddit');
+        const statTotal = document.getElementById('statTotal');
+        if (statHN) statHN.textContent = hn;
+        if (statReddit) statReddit.textContent = reddit;
+        if (statTotal) statTotal.textContent = total;
     }
 
     // ═══ TICKER ═══
@@ -4428,8 +4425,8 @@ Learn, explore, and stay informed. <span class="post-tag">#CyberWatch</span> <sp
                     avatar: 'HN', avatarColor: 'linear-gradient(135deg, #ff6600, #ff9933)',
                     time: timeAgo, category: category,
                     content: escapeHtml(story.title) + (story.url ? '\n\n<a href="' + escapeHtml(story.url) + '" target="_blank" rel="noopener">' + escapeHtml(new URL(story.url).hostname) + '</a>' : '') + '\n\n<span class="post-tag">#HackerNews</span> <span class="post-tag">#' + category + '</span>',
-                    likes: story.score || 0, reposts: Math.floor((story.score || 0) / 3),
-                    replies: story.descendants || 0, views: formatNum((story.score || 0) * 15)
+                    likes: story.score || 0, reposts: 0,
+                    replies: story.descendants || 0, views: formatNum(story.score || 0)
                 });
             });
             updateLiveFeedWidget(allStories.slice(0, 8));
@@ -4467,8 +4464,8 @@ Learn, explore, and stay informed. <span class="post-tag">#CyberWatch</span> <sp
                     POSTS.push({
                         id: rid, author: author, handle: handle, verified: true,
                         avatar: avatar, avatarColor: color, time: timeAgo, category: category,
-                        content: text, likes: p.score || 0, reposts: Math.floor((p.score || 0) / 4),
-                        replies: p.num_comments || 0, views: formatNum((p.score || 0) * 10)
+                        content: text, likes: p.score || 0, reposts: 0,
+                        replies: p.num_comments || 0, views: formatNum(p.score || 0)
                     });
                 });
                 console.log('[CyberWatch] Loaded posts from r/' + sub);
@@ -4506,8 +4503,8 @@ Learn, explore, and stay informed. <span class="post-tag">#CyberWatch</span> <sp
                         avatar: 'NVD', avatarColor: 'linear-gradient(135deg, #ff4757, #ff6b9d)',
                         time: 'today', category: 'cyber', severity: cve.severity,
                         content: '<span class="severity ' + sevClass + '">' + cve.severity.toUpperCase() + ' — CVSS ' + cve.cvss + '</span> ' + escapeHtml(cve.id) + '\n\n' + escapeHtml(cve.desc) + '\n\n<span class="post-tag">#CVE</span> <span class="post-tag">#VulnAlert</span>',
-                        likes: Math.floor(cve.cvss * 300), reposts: Math.floor(cve.cvss * 100),
-                        replies: Math.floor(cve.cvss * 40), views: formatNum(Math.floor(cve.cvss * 5000))
+                        likes: 0, reposts: 0,
+                        replies: 0, views: "0"
                     });
                 });
                 renderPosts(); renderTicker();
@@ -4584,7 +4581,7 @@ Learn, explore, and stay informed. <span class="post-tag">#CyberWatch</span> <sp
         TICKER_EVENTS.length = 0;
         await Promise.allSettled([fetchHackerNews(), fetchReddit(), fetchLatestCVEs(), fetchCryptoPrices()]);
         liveDataLoaded = true;
-        renderPosts(); renderTicker(); renderTrending();
+        renderPosts(); renderTicker(); renderTrending(); updateStatCards();
         console.log('[CyberWatch] All live data loaded. Total posts:', POSTS.length);
     }
 
@@ -4602,7 +4599,7 @@ Learn, explore, and stay informed. <span class="post-tag">#CyberWatch</span> <sp
         renderTrending();
         renderFollows();
         renderLiveNews();
-        animateCounters();
+        updateStatCards();
         renderTicker();
         updateXPDisplay();
         updateNotifBadge();
