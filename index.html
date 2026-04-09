@@ -1278,6 +1278,130 @@
         .empty-state-text { font-size: 15px; font-weight: 600; }
         .empty-state-sub { font-size: 13px; margin-top: 4px; }
 
+        /* ─── COMMENTS / POST DETAIL ─── */
+        .comment {
+            display: flex;
+            gap: 10px;
+            padding: 14px 24px 14px 54px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .comment:last-child { border-bottom: none; }
+
+        .comment-body { flex: 1; min-width: 0; }
+
+        .comment-meta {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            flex-wrap: wrap;
+        }
+
+        .comment-author { font-weight: 700; font-size: 13px; }
+        .comment-handle { color: var(--text-secondary); font-size: 12px; }
+        .comment-time { color: var(--text-muted); font-size: 12px; }
+
+        .comment-text {
+            font-size: 14px;
+            line-height: 1.5;
+            margin-top: 3px;
+            color: var(--text-secondary);
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+        }
+
+        .comment-actions {
+            display: flex;
+            gap: 16px;
+            margin-top: 6px;
+        }
+
+        .comment-action {
+            font-size: 12px;
+            color: var(--text-muted);
+            cursor: pointer;
+            transition: color 0.15s;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .comment-action:hover { color: var(--accent); }
+
+        .reply-box {
+            display: flex;
+            gap: 10px;
+            padding: 12px 24px 12px 54px;
+            border-top: 1px solid var(--border);
+            align-items: flex-start;
+        }
+
+        .reply-input {
+            flex: 1;
+            background: var(--bg-input);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 10px 16px;
+            color: var(--text-primary);
+            font-size: 14px;
+            font-family: inherit;
+            outline: none;
+            resize: none;
+            min-height: 40px;
+            max-height: 120px;
+            transition: border-color 0.2s;
+        }
+
+        .reply-input:focus { border-color: var(--accent); }
+
+        .reply-submit {
+            background: var(--accent);
+            color: #000;
+            border: none;
+            border-radius: 20px;
+            padding: 8px 16px;
+            font-weight: 700;
+            font-size: 13px;
+            cursor: pointer;
+            flex-shrink: 0;
+            align-self: flex-end;
+            transition: opacity 0.2s;
+        }
+
+        .reply-submit:hover { opacity: 0.85; }
+        .reply-submit:disabled { opacity: 0.4; cursor: not-allowed; }
+
+        .thread-line {
+            width: 2px;
+            background: var(--border);
+            margin: 0 auto;
+            flex-shrink: 0;
+        }
+
+        .replying-to {
+            font-size: 12px;
+            color: var(--text-muted);
+            padding: 8px 24px 0 54px;
+            border-top: 1px solid var(--border);
+        }
+
+        .replying-to span { color: var(--accent); }
+
+        .comment-count-label {
+            padding: 12px 24px;
+            font-size: 14px;
+            font-weight: 700;
+            border-bottom: 1px solid var(--border);
+            color: var(--text-primary);
+        }
+
+        @media (max-width: 768px) {
+            .comment { padding: 12px 16px 12px 42px; }
+            .reply-box { padding: 10px 16px 10px 42px; }
+            .replying-to { padding: 8px 16px 0 42px; }
+            .comment-count-label { padding: 10px 16px; }
+        }
+
         /* ─── SETTINGS ─── */
         .settings-section {
             padding: 18px 24px;
@@ -3649,6 +3773,188 @@
         updateNotifBadge();
     }
 
+    // ═══ COMMENTS / POST DETAIL ═══
+
+    // Seed comments on existing posts
+    const COMMENTS = {};
+
+    function seedComments() {
+        COMMENTS[1] = [
+            { id: 'c1', author: 'NetSec Engineer', handle: '@netsec_eng', avatar: 'NE', avatarColor: 'linear-gradient(135deg, #00d4ff, #2ed573)', text: 'Already patched our entire fleet. The IOCs from CISA were spot on — we caught 3 attempted connections to the C2 within the first hour.', time: '1m ago', likes: 234 },
+            { id: 'c2', author: 'Cloud Security', handle: '@cloud_sec', avatar: 'CS', avatarColor: 'linear-gradient(135deg, #00d4ff, #a855f7)', text: 'Any guidance on cloud-hosted instances? Our AWS WAF rules need updating for this one.', time: '5m ago', likes: 89 },
+            { id: 'c3', author: 'ArukuX', handle: '@ArukuX', avatar: 'AX', avatarColor: 'linear-gradient(135deg, #00d4ff, #a855f7)', verified: true, text: 'Critical stuff. Everyone patch now — this is actively being exploited in the wild.', time: '8m ago', likes: 567 }
+        ];
+        COMMENTS[2] = [
+            { id: 'c4', author: 'Malware Lab', handle: '@malware_lab', avatar: 'ML', avatarColor: 'linear-gradient(135deg, #ff4757, #a855f7)', text: 'We\'ve been tracking APT41 for months. The shift to LOLBins makes detection significantly harder — traditional AV won\'t catch this.', time: '10m ago', likes: 445 },
+            { id: 'c5', author: 'OSINT Curious', handle: '@osintcurious', avatar: 'OC', avatarColor: 'linear-gradient(135deg, #ffa502, #ff4757)', text: 'The DNS tunneling component is new. Any YARA rules available for the initial loader?', time: '12m ago', likes: 198 }
+        ];
+        COMMENTS[3] = [
+            { id: 'c6', author: 'Hack The Box', handle: '@hackthebox_eu', avatar: 'HTB', avatarColor: 'linear-gradient(135deg, #2ed573, #00d4ff)', text: 'We actually have a lab challenge based on this exact pattern. Search for "Input Validation" in our academy.', time: '20m ago', likes: 312 },
+            { id: 'c7', author: 'Privacy Advocate', handle: '@privacy_first', avatar: 'PA', avatarColor: 'linear-gradient(135deg, #a855f7, #ff6b9d)', text: 'People underestimate how many production apps still concatenate strings into SQL. In 2026. Wild.', time: '25m ago', likes: 178 },
+            { id: 'c8', author: 'ArukuX', handle: '@ArukuX', avatar: 'AX', avatarColor: 'linear-gradient(135deg, #00d4ff, #a855f7)', verified: true, text: 'Great example. ORMs solve this for most frameworks — SQLAlchemy for Python, Prisma for Node, etc.', time: '28m ago', likes: 445 }
+        ];
+        COMMENTS[4] = [
+            { id: 'c9', author: 'SecDev Daily', handle: '@secdev_daily', avatar: 'SD', avatarColor: 'linear-gradient(135deg, #2ed573, #00d4ff)', text: 'Firefox + uBlock Origin is still the best combo for most people. Tor is overkill unless your threat model requires it.', time: '45m ago', likes: 567 }
+        ];
+        COMMENTS[8] = [
+            { id: 'c10', author: 'CISA Official', handle: '@CISAgov', avatar: 'C', avatarColor: 'linear-gradient(135deg, #ff4757, #ff6b9d)', text: 'We are actively tracking DarkVault. Updated signatures have been pushed to our Automated Indicator Sharing (AIS) feed.', time: '3h ago', likes: 890 },
+            { id: 'c11', author: 'DHS Briefing', handle: '@DHS_updates', avatar: 'DHS', avatarColor: 'linear-gradient(135deg, #ff4757, #ffa502)', text: 'Healthcare sector has been hit hardest. If you\'re in healthcare IT, check the HC3 bulletin released today.', time: '4h ago', likes: 234 }
+        ];
+        COMMENTS[10] = [
+            { id: 'c12', author: 'Breaking Cyber', handle: '@breaking_cyber', avatar: 'BC', avatarColor: 'linear-gradient(135deg, #f1c40f, #ffa502)', text: 'UPDATE: Company confirms the breach vector was a compromised employee VPN credential. No MFA was enforced on that account.', time: '5h ago', likes: 1200 },
+            { id: 'c13', author: 'CyberWatch Intel', handle: '@cyberwatch_intel', avatar: 'CW', avatarColor: 'linear-gradient(135deg, #00d4ff, #a855f7)', text: 'This is why MFA everywhere is non-negotiable. One credential without MFA = game over.', time: '5h ago', likes: 890 },
+            { id: 'c14', author: 'ArukuX', handle: '@ArukuX', avatar: 'AX', avatarColor: 'linear-gradient(135deg, #00d4ff, #a855f7)', verified: true, text: 'If you\'re still reusing passwords in 2026, this is your wake-up call. Password manager + MFA on everything.', time: '6h ago', likes: 678 }
+        ];
+    }
+
+    function getComments(postId) {
+        return COMMENTS[postId] || [];
+    }
+
+    function openPostDetail(postId) {
+        const post = POSTS.find(p => p.id === postId);
+        if (!post) return;
+
+        setFeedChrome(false);
+        const titleEl = document.querySelector('.feed-title');
+        titleEl.innerHTML = `
+            <div style="display: flex; align-items: center; gap: 10px; cursor: pointer;" onclick="switchPage('home')">
+                <span style="font-size: 20px;">&#x2190;</span>
+                <span>Post</span>
+            </div>`;
+
+        const comments = getComments(postId);
+        const postsArea = document.getElementById('feedPosts');
+
+        postsArea.innerHTML = `
+            <!-- Original post -->
+            <div style="padding: 18px 24px; border-bottom: 1px solid var(--border);">
+                <div style="display: flex; gap: 14px; align-items: flex-start;">
+                    <div class="avatar" style="background: ${post.avatarColor}; cursor: pointer;" onclick="openProfile('${post.handle}')">${post.avatar}</div>
+                    <div style="flex: 1; min-width: 0;">
+                        <div class="post-meta">
+                            <span class="post-author" style="cursor: pointer;" onclick="openProfile('${post.handle}')">${escapeHtml(post.author)}</span>
+                            ${post.verified ? '<span class="post-verified">&#x2713;</span>' : ''}
+                            <span class="post-handle">${escapeHtml(post.handle)}</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="post-content" style="margin-top: 12px; font-size: 16px;">${post.content}</div>
+                <div style="margin-top: 14px; padding-top: 12px; border-top: 1px solid var(--border); font-size: 12px; color: var(--text-muted);">
+                    ${post.time} &#xB7; <strong style="color: var(--text-primary);">${post.views}</strong> Views &#xB7; <strong style="color: var(--text-primary);">${formatNum(post.reposts)}</strong> Reposts &#xB7; <strong style="color: var(--text-primary);">${formatNum(post.likes)}</strong> Likes
+                </div>
+                <div class="post-actions" style="margin-top: 12px; padding-top: 12px; border-top: 1px solid var(--border); max-width: 100%;">
+                    <div class="post-action" onclick="toggleAction(this, 'reply')">
+                        <span class="post-action-icon">&#x1F4AC;</span>
+                        <span>${formatNum(post.replies)}</span>
+                    </div>
+                    <div class="post-action" onclick="toggleAction(this, 'repost')">
+                        <span class="post-action-icon">&#x1F501;</span>
+                        <span>${formatNum(post.reposts)}</span>
+                    </div>
+                    <div class="post-action" onclick="toggleAction(this, 'like')">
+                        <span class="post-action-icon">&#x2764;</span>
+                        <span>${formatNum(post.likes)}</span>
+                    </div>
+                    <div class="post-action ${bookmarkedPosts.includes(post.id) ? 'liked' : ''}" onclick="toggleBookmark(${post.id}, this)">
+                        <span class="post-action-icon">${bookmarkedPosts.includes(post.id) ? '&#x1F516;' : '&#x1F3F7;'}</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Reply box -->
+            <div class="replying-to">Replying to <span>${escapeHtml(post.handle)}</span></div>
+            <div class="reply-box">
+                <div class="avatar" style="background: linear-gradient(135deg, #00d4ff, #a855f7); width: 32px; height: 32px; font-size: 11px;">AX</div>
+                <textarea class="reply-input" id="replyInput" placeholder="Post your reply..." oninput="document.getElementById('replyBtn').disabled = !this.value.trim()"></textarea>
+                <button class="reply-submit" id="replyBtn" disabled onclick="submitReply(${postId})">Reply</button>
+            </div>
+
+            <!-- Comments -->
+            <div class="comment-count-label">${comments.length} ${comments.length === 1 ? 'Reply' : 'Replies'}</div>
+            <div id="commentsContainer">
+                ${renderComments(comments)}
+            </div>
+        `;
+
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function renderComments(comments) {
+        if (comments.length === 0) {
+            return `
+                <div class="empty-state" style="padding: 40px 20px;">
+                    <div class="empty-state-icon">&#x1F4AC;</div>
+                    <div class="empty-state-text">No replies yet</div>
+                    <div class="empty-state-sub">Be the first to reply!</div>
+                </div>
+            `;
+        }
+
+        return comments.map(c => `
+            <div class="comment">
+                <div class="avatar" style="background: ${c.avatarColor}; width: 32px; height: 32px; font-size: 11px; cursor: pointer;" onclick="openProfile('${c.handle}')">${c.avatar}</div>
+                <div class="comment-body">
+                    <div class="comment-meta">
+                        <span class="comment-author" style="cursor: pointer;" onclick="openProfile('${c.handle}')">${escapeHtml(c.author)}</span>
+                        ${c.verified ? '<span class="post-verified" style="font-size: 12px;">&#x2713;</span>' : ''}
+                        <span class="comment-handle">${escapeHtml(c.handle)}</span>
+                        <span class="comment-time">&#xB7; ${c.time}</span>
+                    </div>
+                    <div class="comment-text">${escapeHtml(c.text)}</div>
+                    <div class="comment-actions">
+                        <div class="comment-action" onclick="toggleAction(this, 'like')">
+                            <span>&#x2764;</span> <span>${formatNum(c.likes)}</span>
+                        </div>
+                        <div class="comment-action" onclick="toggleAction(this, 'repost')">
+                            <span>&#x1F501;</span>
+                        </div>
+                        <div class="comment-action">
+                            <span>&#x1F4AC;</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `).join('');
+    }
+
+    function submitReply(postId) {
+        const input = document.getElementById('replyInput');
+        const text = input.value.trim();
+        if (!text) return;
+
+        if (!COMMENTS[postId]) COMMENTS[postId] = [];
+
+        COMMENTS[postId].unshift({
+            id: 'c' + Date.now(),
+            author: 'ArukuX',
+            handle: '@ArukuX',
+            avatar: 'AX',
+            avatarColor: 'linear-gradient(135deg, #00d4ff, #a855f7)',
+            verified: true,
+            text: text,
+            time: 'just now',
+            likes: 0
+        });
+
+        // Update reply count on the post
+        const post = POSTS.find(p => p.id === postId);
+        if (post) post.replies = (post.replies || 0) + 1;
+
+        awardXP(5, 'Reply posted! +5 XP');
+
+        // Re-render
+        input.value = '';
+        document.getElementById('replyBtn').disabled = true;
+        const container = document.getElementById('commentsContainer');
+        const countLabel = document.querySelector('.comment-count-label');
+        if (container) container.innerHTML = renderComments(COMMENTS[postId]);
+        if (countLabel) {
+            const count = COMMENTS[postId].length;
+            countLabel.textContent = `${count} ${count === 1 ? 'Reply' : 'Replies'}`;
+        }
+    }
+
     // ═══ PROFILE PAGE ═══
 
     function openProfile(handle) {
@@ -3771,8 +4077,9 @@
     // ═══ SHARED POST RENDERER ═══
     function renderSinglePost(post) {
         const isBookmarked = bookmarkedPosts.includes(post.id);
+        const commentCount = (COMMENTS[post.id] || []).length + (post.replies || 0);
         return `
-            <div class="post" data-category="${post.category}">
+            <div class="post" data-category="${post.category}" onclick="openPostDetail(${post.id})">
                 <div class="post-header">
                     <div class="avatar" style="background: ${post.avatarColor}; cursor: pointer;" onclick="event.stopPropagation(); openProfile('${post.handle}')">${post.avatar}</div>
                     <div style="flex: 1; min-width: 0;">
@@ -3785,9 +4092,9 @@
                         <div class="post-body" style="margin-left: 0;">
                             <div class="post-content">${post.content}</div>
                             <div class="post-actions">
-                                <div class="post-action" onclick="event.stopPropagation(); toggleAction(this, 'reply')">
+                                <div class="post-action" onclick="event.stopPropagation(); openPostDetail(${post.id})">
                                     <span class="post-action-icon">&#x1F4AC;</span>
-                                    <span>${formatNum(post.replies)}</span>
+                                    <span>${formatNum(commentCount)}</span>
                                 </div>
                                 <div class="post-action" onclick="event.stopPropagation(); toggleAction(this, 'repost')">
                                     <span class="post-action-icon">&#x1F501;</span>
@@ -4724,6 +5031,7 @@
 
     // ═══ INIT ═══
     document.addEventListener('DOMContentLoaded', () => {
+        seedComments();
         renderShorts();
         renderPosts();
         renderTrending();
