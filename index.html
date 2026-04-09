@@ -48,12 +48,16 @@
 
         html { scroll-behavior: smooth; }
 
+        html, body {
+            overflow-x: hidden;
+            width: 100%;
+        }
+
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
             background: var(--bg-primary);
             color: var(--text-primary);
             line-height: 1.5;
-            overflow-x: hidden;
         }
 
         /* ─── GLOBAL POLISH ─── */
@@ -76,6 +80,7 @@
             max-width: 1440px;
             margin: 0 auto;
             min-height: 100vh;
+            overflow-x: hidden;
         }
 
         /* ─── LEFT SIDEBAR ─── */
@@ -221,6 +226,8 @@
         .feed {
             border-right: 1px solid var(--border);
             min-height: 100vh;
+            overflow-x: hidden;
+            max-width: 100%;
         }
 
         .feed-header {
@@ -297,6 +304,8 @@
             align-items: center;
             gap: 6px;
             flex-wrap: wrap;
+            max-width: 100%;
+            overflow: hidden;
         }
 
         .post-author { font-weight: 700; font-size: 15px; transition: color 0.15s; }
@@ -311,11 +320,29 @@
             font-size: 15px;
             line-height: 1.7;
             word-wrap: break-word;
+            overflow-wrap: break-word;
+            word-break: break-word;
+            max-width: 100%;
+            overflow-x: hidden;
         }
 
         .post-content a {
             color: var(--accent);
             text-decoration: none;
+        }
+
+        .post-content pre {
+            overflow-x: auto;
+            max-width: 100%;
+            border-radius: 8px;
+            padding: 12px;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            margin: 8px 0;
+        }
+
+        .post-content code {
+            word-break: break-all;
         }
 
         .post-content a:hover { text-decoration: underline; }
@@ -832,8 +859,10 @@
 
         @media (max-width: 768px) {
             .sidebar { display: none; }
-            .app { grid-template-columns: 1fr; }
+            .app { grid-template-columns: 1fr; max-width: 100vw; }
+            .feed { border-right: none; max-width: 100vw; }
             .feed-header { position: sticky; }
+            #feedPosts { max-width: 100%; overflow-x: hidden; }
 
             /* Feed spacing — tighter on mobile */
             .post { padding: 14px 16px; }
@@ -1479,6 +1508,7 @@
             height: 34px;
             display: flex;
             align-items: center;
+            max-width: 100%;
         }
 
         .ticker-label {
