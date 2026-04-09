@@ -2115,398 +2115,27 @@
     const POSTS = [
         {
             id: 1,
-            author: "CISA Official",
-            handle: "@CISAgov",
-            verified: true,
-            avatar: "C",
-            avatarColor: "linear-gradient(135deg, #ff4757, #ff6b9d)",
-            time: "2m",
-            category: "homeland",
-            severity: "critical",
-            content: `<span class="severity severity-critical">&#x1F6A8; CRITICAL</span> New advisory: Active exploitation of CVE-2026-21345 affecting federal network infrastructure. All .gov agencies must patch within 48 hours.\n\n<span class="post-tag">#CISA</span> <span class="post-tag">#FederalSecurity</span> <span class="post-tag">#PatchNow</span>`,
-            likes: 4821,
-            reposts: 2341,
-            replies: 892,
-            views: "1.2M"
-        },
-        {
-            id: 2,
-            author: "CyberWatch Intel",
-            handle: "@cyberwatch_intel",
+            author: "CyberWatch",
+            handle: "@cyberwatch",
             verified: true,
             avatar: "CW",
             avatarColor: "linear-gradient(135deg, #00d4ff, #a855f7)",
-            time: "15m",
+            time: "pinned",
             category: "cyber",
-            severity: "high",
-            content: `<span class="severity severity-high">&#x26A0; HIGH</span> Thread: Understanding the new APT41 campaign targeting critical infrastructure\n\n1/ The group has shifted tactics to use living-off-the-land binaries (LOLBins) to evade detection. Here's what you need to know:\n\n&#x2022; Initial access via spearphishing with .iso attachments\n&#x2022; Lateral movement using PsExec and WMI\n&#x2022; Data exfil through DNS tunneling\n\n<span class="post-tag">#ThreatIntel</span> <span class="post-tag">#APT41</span> <span class="post-tag">#InfoSec</span>`,
-            likes: 3205,
-            reposts: 1876,
-            replies: 445,
-            views: "890K"
-        },
-        {
-            id: 3,
-            author: "SecDev Daily",
-            handle: "@secdev_daily",
-            verified: true,
-            avatar: "SD",
-            avatarColor: "linear-gradient(135deg, #2ed573, #00d4ff)",
-            time: "32m",
-            category: "programming",
-            content: `&#x1F4BB; Security tip: Always sanitize user input. Here's a quick Python example of input validation:\n\n<pre><code><span class="kw">import</span> <span class="fn">re</span>\n<span class="kw">from</span> html <span class="kw">import</span> <span class="fn">escape</span>\n\n<span class="kw">def</span> <span class="fn">sanitize_input</span>(user_input: <span class="fn">str</span>) -> <span class="fn">str</span>:\n    <span class="cm"># Strip null bytes and control chars</span>\n    cleaned = re.<span class="fn">sub</span>(<span class="str">r'[\\x00-\\x08\\x0b-\\x0c\\x0e-\\x1f]'</span>, <span class="str">''</span>, user_input)\n    <span class="cm"># HTML-encode to prevent XSS</span>\n    <span class="kw">return</span> <span class="fn">escape</span>(cleaned, quote=<span class="num">True</span>)</code></pre>\n\nNever trust client-side validation alone. <span class="post-tag">#SecureCoding</span> <span class="post-tag">#Python</span>`,
-            likes: 2156,
-            reposts: 987,
-            replies: 234,
-            views: "456K"
-        },
-        {
-            id: 4,
-            author: "Privacy Advocate",
-            handle: "@privacy_first",
-            verified: false,
-            avatar: "PA",
-            avatarColor: "linear-gradient(135deg, #a855f7, #ff6b9d)",
-            time: "1h",
-            category: "privacy",
-            content: `&#x1F512; Your browser fingerprint is unique among 300,000+ users. Here's how to reduce your digital fingerprint:\n\n&#x2022; Use Firefox with resistFingerprinting enabled\n&#x2022; Disable WebGL and WebRTC\n&#x2022; Use a VPN (not a free one)\n&#x2022; Clear cookies regularly or use containers\n&#x2022; Consider Tor for sensitive browsing\n\nCheck your fingerprint: your browser has ~33 bits of identifying entropy right now.\n\n<span class="post-tag">#Privacy</span> <span class="post-tag">#OpSec</span> <span class="post-tag">#Fingerprinting</span>`,
-            likes: 5432,
-            reposts: 3210,
-            replies: 678,
-            views: "2.1M"
-        },
-        {
-            id: 5,
-            author: "OSINT Curious",
-            handle: "@osintcurious",
-            verified: true,
-            avatar: "OC",
-            avatarColor: "linear-gradient(135deg, #ffa502, #ff4757)",
-            time: "2h",
-            category: "osint",
-            content: `&#x1F50E; OSINT Tip of the Day: Reverse image searching goes beyond Google.\n\nTools you should know:\n&#x2022; TinEye — finds exact matches & modified versions\n&#x2022; Yandex Images — best for facial recognition\n&#x2022; Bing Visual Search — good for products\n&#x2022; Google Lens — context-aware results\n&#x2022; PimEyes — face search engine\n\nAlways verify information from multiple sources. <span class="post-tag">#OSINT</span> <span class="post-tag">#Investigation</span>`,
-            likes: 1987,
-            reposts: 1123,
-            replies: 345,
-            views: "678K"
-        },
-        {
-            id: 6,
-            author: "DHS Briefing",
-            handle: "@DHS_updates",
-            verified: true,
-            avatar: "DHS",
-            avatarColor: "linear-gradient(135deg, #ff4757, #ffa502)",
-            time: "3h",
-            category: "homeland",
-            severity: "medium",
-            content: `<span class="severity severity-medium">&#x1F7E3; MEDIUM</span> DHS has updated the National Terrorism Advisory System bulletin. Key points:\n\n&#x2022; Domestic violent extremism remains the primary threat\n&#x2022; Foreign terrorist organizations continue online recruitment\n&#x2022; Critical infrastructure protection guidelines updated\n&#x2022; Public reporting mechanisms strengthened\n\nFull bulletin: <span class="post-tag">#HomelandSecurity</span> <span class="post-tag">#NTAS</span> <span class="post-tag">#PublicSafety</span>`,
-            likes: 3456,
-            reposts: 2100,
-            replies: 567,
-            views: "1.8M"
-        },
-        {
-            id: 7,
-            author: "Hack The Box",
-            handle: "@hackthebox_eu",
-            verified: true,
-            avatar: "HTB",
-            avatarColor: "linear-gradient(135deg, #2ed573, #00d4ff)",
-            time: "4h",
-            category: "tools",
-            content: `&#x1F3AF; New machine dropped: "Fortress" — rated Hard\n\nSkills tested:\n&#x2022; Active Directory enumeration\n&#x2022; Kerberoasting\n&#x2022; Privilege escalation via SeImpersonatePrivilege\n&#x2022; Lateral movement with Pass-the-Hash\n\nPerfect practice for real-world pentesting scenarios. Who's going for first blood? &#x1F6E1;\n\n<span class="post-tag">#HTB</span> <span class="post-tag">#CTF</span> <span class="post-tag">#PenTest</span>`,
-            likes: 2789,
-            reposts: 890,
-            replies: 456,
-            views: "534K"
-        },
-        {
-            id: 8,
-            author: "Malware Lab",
-            handle: "@malware_lab",
-            verified: true,
-            avatar: "ML",
-            avatarColor: "linear-gradient(135deg, #ff4757, #a855f7)",
-            time: "5h",
-            category: "cyber",
-            severity: "high",
-            content: `<span class="severity severity-high">&#x26A0; HIGH</span> New ransomware variant "DarkVault" detected in the wild.\n\nTechnical details:\n&#x2022; Uses ChaCha20 + RSA-4096 hybrid encryption\n&#x2022; Disables Volume Shadow Copy before encryption\n&#x2022; Exfiltrates data via Tor before encrypting\n&#x2022; Ransom demand: 15 BTC (~$1.2M)\n&#x2022; IOCs: SHA256 hashes in thread below &#x1F447;\n\nUpdate your EDR signatures immediately. <span class="post-tag">#Ransomware</span> <span class="post-tag">#Malware</span>`,
-            likes: 4102,
-            reposts: 2567,
-            replies: 890,
-            views: "1.5M"
-        },
-        {
-            id: 9,
-            author: "NetSec Engineer",
-            handle: "@netsec_eng",
-            verified: false,
-            avatar: "NE",
-            avatarColor: "linear-gradient(135deg, #00d4ff, #2ed573)",
-            time: "6h",
-            category: "programming",
-            content: `&#x1F310; Quick guide: Setting up a proper firewall with nftables (replaces iptables):\n\n<pre><code><span class="cm">#!/usr/sbin/nft -f</span>\nflush ruleset\n\ntable inet <span class="fn">firewall</span> {\n  chain <span class="fn">input</span> {\n    type filter hook input priority <span class="num">0</span>; policy drop;\n    ct state established,related <span class="kw">accept</span>\n    iif lo <span class="kw">accept</span>\n    tcp dport { <span class="num">22</span>, <span class="num">80</span>, <span class="num">443</span> } <span class="kw">accept</span>\n    <span class="kw">drop</span>\n  }\n}</code></pre>\n\nDefault deny > default allow. Always. <span class="post-tag">#Networking</span> <span class="post-tag">#Firewall</span>`,
-            likes: 1876,
-            reposts: 765,
-            replies: 198,
-            views: "345K"
-        },
-        {
-            id: 10,
-            author: "Breaking Cyber",
-            handle: "@breaking_cyber",
-            verified: true,
-            avatar: "BC",
-            avatarColor: "linear-gradient(135deg, #f1c40f, #ffa502)",
-            time: "7h",
-            category: "news",
-            severity: "info",
-            content: `<span class="severity severity-info">&#x1F4E2; BREAKING</span> Major tech company discloses data breach affecting 50M+ users.\n\nWhat we know so far:\n&#x2022; Breach occurred over a 3-month period\n&#x2022; Personal data including emails, hashed passwords exposed\n&#x2022; No financial data compromised (separate system)\n&#x2022; Mandatory password reset rolling out\n\nIf you reuse passwords across services, change them NOW. Use a password manager.\n\n<span class="post-tag">#DataBreach</span> <span class="post-tag">#CyberSecurity</span>`,
-            likes: 8901,
-            reposts: 5432,
-            replies: 1234,
-            views: "4.5M"
-        },
-        {
-            id: 11,
-            author: "Cloud Security",
-            handle: "@cloud_sec",
-            verified: true,
-            avatar: "CS",
-            avatarColor: "linear-gradient(135deg, #00d4ff, #a855f7)",
-            time: "8h",
-            category: "programming",
-            content: `&#x2601; AWS IAM best practices thread:\n\n1. Never use root account for daily tasks\n2. Enable MFA on ALL accounts\n3. Use IAM roles, not access keys\n4. Apply least privilege principle\n5. Rotate credentials every 90 days\n6. Use AWS Organizations + SCPs\n7. Enable CloudTrail in all regions\n8. Review IAM Access Analyzer weekly\n\nOne misconfigured S3 bucket can cost you millions. <span class="post-tag">#AWS</span> <span class="post-tag">#CloudSec</span>`,
-            likes: 3456,
-            reposts: 1890,
-            replies: 345,
-            views: "890K"
-        },
-        {
-            id: 12,
-            author: "FEMA Updates",
-            handle: "@faborada",
-            verified: true,
-            avatar: "F",
-            avatarColor: "linear-gradient(135deg, #2ed573, #00d4ff)",
-            time: "9h",
-            category: "homeland",
-            content: `&#x1F3DB; Emergency preparedness reminder:\n\n&#x2705; Update your emergency contact list\n&#x2705; Check your go-bag supplies (water, food, first aid)\n&#x2705; Test your NOAA Weather Radio\n&#x2705; Review family communication plan\n&#x2705; Know your evacuation routes\n&#x2705; Back up important documents digitally\n\nDisasters don't wait. Be ready. <span class="post-tag">#EmergencyPrep</span> <span class="post-tag">#FEMA</span>`,
-            likes: 2100,
-            reposts: 1456,
-            replies: 234,
-            views: "670K"
-        },
-        {
-            id: 13,
-            author: "CISA Official",
-            handle: "@CISAgov",
-            verified: true,
-            avatar: "C",
-            avatarColor: "linear-gradient(135deg, #ff4757, #ff6b9d)",
-            time: "1d",
-            category: "homeland",
-            content: `Reminder: CISA's Known Exploited Vulnerabilities (KEV) catalog is your patch priority list. If it's in the KEV, patch it NOW — these aren't theoretical, they're actively being exploited in the wild.\n\nCheck it daily: <span class="post-tag">#KEV</span> <span class="post-tag">#PatchManagement</span>`,
-            likes: 3100,
-            reposts: 1890,
-            replies: 234,
-            views: "980K"
-        },
-        {
-            id: 14,
-            author: "CISA Official",
-            handle: "@CISAgov",
-            verified: true,
-            avatar: "C",
-            avatarColor: "linear-gradient(135deg, #ff4757, #ff6b9d)",
-            time: "2d",
-            category: "homeland",
-            content: `<span class="severity severity-medium">&#x1F7E3; ADVISORY</span> Secure by Design pledge update: 230+ companies have committed to building security into products from day one.\n\nKey principles:\n&#x2022; MFA by default\n&#x2022; Eliminate default passwords\n&#x2022; Reduce entire classes of vulnerabilities\n&#x2022; Publish a vulnerability disclosure policy\n\n<span class="post-tag">#SecureByDesign</span> <span class="post-tag">#CISA</span>`,
-            likes: 5600,
-            reposts: 3200,
-            replies: 567,
-            views: "1.5M"
-        },
-        {
-            id: 15,
-            author: "CyberWatch Intel",
-            handle: "@cyberwatch_intel",
-            verified: true,
-            avatar: "CW",
-            avatarColor: "linear-gradient(135deg, #00d4ff, #a855f7)",
-            time: "1d",
-            category: "cyber",
-            content: `Threat landscape update — Q2 2026:\n\n&#x2022; Ransomware attacks up 34% YoY\n&#x2022; Supply chain compromises now #2 initial access vector\n&#x2022; AI-generated phishing emails bypass 68% of filters\n&#x2022; Average breach cost: $4.9M (up from $4.45M)\n&#x2022; Mean time to detect: 197 days\n\nThe game is changing fast. <span class="post-tag">#ThreatIntel</span> <span class="post-tag">#CyberStats</span>`,
-            likes: 4500,
-            reposts: 2800,
-            replies: 670,
-            views: "1.1M"
-        },
-        {
-            id: 16,
-            author: "CyberWatch Intel",
-            handle: "@cyberwatch_intel",
-            verified: true,
-            avatar: "CW",
-            avatarColor: "linear-gradient(135deg, #00d4ff, #a855f7)",
-            time: "3d",
-            category: "cyber",
-            content: `IOC dump — new infostealer campaign "ShadowGrab":\n\nC2 domains:\n&#x2022; update-service[.]cloud\n&#x2022; cdn-assets[.]xyz\n\nFile hashes (SHA256):\n&#x2022; a1b2c3d4e5f6...789\n&#x2022; f9e8d7c6b5a4...321\n\nTargets: browser credentials, crypto wallets, session tokens. Block these at your perimeter.\n\n<span class="post-tag">#IOC</span> <span class="post-tag">#Infostealer</span> <span class="post-tag">#ThreatHunting</span>`,
-            likes: 2900,
-            reposts: 1700,
-            replies: 345,
-            views: "780K"
-        },
-        {
-            id: 17,
-            author: "SecDev Daily",
-            handle: "@secdev_daily",
-            verified: true,
-            avatar: "SD",
-            avatarColor: "linear-gradient(135deg, #2ed573, #00d4ff)",
-            time: "1d",
-            category: "programming",
-            content: `Stop hardcoding secrets in your code. Use environment variables at minimum, or better:\n\n&#x2022; AWS Secrets Manager / Azure Key Vault\n&#x2022; HashiCorp Vault for self-hosted\n&#x2022; <code>.env</code> files (git-ignored!) for local dev\n&#x2022; GitHub Actions secrets for CI/CD\n\nOne leaked API key can cost you everything. <span class="post-tag">#SecureCoding</span> <span class="post-tag">#DevSecOps</span>`,
-            likes: 3400,
-            reposts: 1500,
-            replies: 290,
-            views: "520K"
-        },
-        {
-            id: 18,
-            author: "SecDev Daily",
-            handle: "@secdev_daily",
-            verified: true,
-            avatar: "SD",
-            avatarColor: "linear-gradient(135deg, #2ed573, #00d4ff)",
-            time: "3d",
-            category: "programming",
-            content: `Dependency supply chain checklist:\n\n&#x2705; Pin exact versions (no ^, no ~)\n&#x2705; Use lockfiles (package-lock.json, poetry.lock)\n&#x2705; Run <code>npm audit</code> / <code>pip-audit</code> in CI\n&#x2705; Review new deps before adding\n&#x2705; Use Dependabot or Renovate for updates\n&#x2705; Consider vendoring critical deps\n\nYour app is only as secure as its weakest dependency. <span class="post-tag">#SupplyChain</span> <span class="post-tag">#AppSec</span>`,
-            likes: 2800,
-            reposts: 1200,
-            replies: 180,
-            views: "390K"
-        },
-        {
-            id: 19,
-            author: "Breaking Cyber",
-            handle: "@breaking_cyber",
-            verified: true,
-            avatar: "BC",
-            avatarColor: "linear-gradient(135deg, #f1c40f, #ffa502)",
-            time: "12h",
-            category: "news",
-            content: `<span class="severity severity-info">&#x1F4E2; DEVELOPING</span> Government agency confirms unauthorized access to employee email systems. Investigation ongoing.\n\nWhat we know:\n&#x2022; Incident discovered 72 hours ago\n&#x2022; Phishing campaign suspected as entry point\n&#x2022; No classified systems affected (so far)\n&#x2022; Incident response team deployed\n\nMore details as they emerge. <span class="post-tag">#DataBreach</span> <span class="post-tag">#GovSec</span>`,
-            likes: 6700,
-            reposts: 4100,
-            replies: 890,
-            views: "3.2M"
-        },
-        {
-            id: 20,
-            author: "Breaking Cyber",
-            handle: "@breaking_cyber",
-            verified: true,
-            avatar: "BC",
-            avatarColor: "linear-gradient(135deg, #f1c40f, #ffa502)",
-            time: "2d",
-            category: "news",
-            content: `Major password manager company announces zero-knowledge architecture overhaul after last year's breach.\n\nNew measures:\n&#x2022; Hardware security module (HSM) for master key derivation\n&#x2022; 600,000 PBKDF2 iterations (up from 100,100)\n&#x2022; Mandatory rotation of all encryption keys\n&#x2022; Third-party audit results published\n\nProgress, but trust takes time to rebuild. <span class="post-tag">#PasswordSecurity</span> <span class="post-tag">#CyberNews</span>`,
-            likes: 5200,
-            reposts: 3100,
-            replies: 780,
-            views: "2.8M"
-        },
-        {
-            id: 21,
-            author: "Malware Lab",
-            handle: "@malware_lab",
-            verified: true,
-            avatar: "ML",
-            avatarColor: "linear-gradient(135deg, #ff4757, #a855f7)",
-            time: "1d",
-            category: "cyber",
-            content: `Analysis complete on DarkVault ransomware sample.\n\nExecution chain:\n1. Macro-enabled doc drops PowerShell loader\n2. Loader fetches DLL from compromised WordPress site\n3. DLL injects into svchost.exe\n4. Disables Windows Defender via registry\n5. Enumerates network shares via SMB\n6. ChaCha20 encrypts files, RSA-4096 wraps key\n7. Tor C2 for ransom negotiation\n\nYARA rule in thread below. <span class="post-tag">#MalwareAnalysis</span> <span class="post-tag">#ReverseEngineering</span>`,
-            likes: 3800,
-            reposts: 2200,
-            replies: 560,
-            views: "920K"
-        },
-        {
-            id: 22,
-            author: "OSINT Curious",
-            handle: "@osintcurious",
-            verified: true,
-            avatar: "OC",
-            avatarColor: "linear-gradient(135deg, #ffa502, #ff4757)",
-            time: "1d",
-            category: "osint",
-            content: `OSINT challenge of the week: Given only a photo of a building, identify:\n\n1. The city and country\n2. The approximate year the photo was taken\n3. The name of the building\n4. What business is on the ground floor\n\nClues are everywhere — shadows, signage, architecture, vegetation, cars. Drop your answers below!\n\n<span class="post-tag">#OSINTChallenge</span> <span class="post-tag">#Geolocation</span>`,
-            likes: 2300,
-            reposts: 890,
-            replies: 1200,
-            views: "450K"
-        },
-        {
-            id: 23,
-            author: "Privacy Advocate",
-            handle: "@privacy_first",
-            verified: false,
-            avatar: "PA",
-            avatarColor: "linear-gradient(135deg, #a855f7, #ff6b9d)",
-            time: "2d",
-            category: "privacy",
-            content: `Your phone is tracking you more than you think.\n\nData collected in background:\n&#x2022; Location (even with GPS "off" — via WiFi/cell triangulation)\n&#x2022; App usage patterns and screen time\n&#x2022; Bluetooth beacons nearby\n&#x2022; Accelerometer data (detects walking, driving, sleeping)\n&#x2022; Network connections and WiFi SSIDs\n\nMinimize: airplane mode, Faraday bag, or leave it home.\n\n<span class="post-tag">#Privacy</span> <span class="post-tag">#Surveillance</span> <span class="post-tag">#MobilePrivacy</span>`,
-            likes: 7200,
+            content: `Welcome to <strong>CyberWatch</strong> — your real-time cybersecurity intelligence hub.
+
+Everything you see in this feed is <strong>live data</strong> from real sources:
+
+&#x2022; <strong>Hacker News</strong> — top security & tech stories
+&#x2022; <strong>NVD/NIST</strong> — latest CVE vulnerabilities
+&#x2022; <strong>Reddit</strong> — r/netsec & r/cybersecurity
+&#x2022; <strong>CoinGecko</strong> — live crypto prices
+
+Learn, explore, and stay informed. <span class="post-tag">#CyberWatch</span> <span class="post-tag">#LiveData</span>`,
+            likes: 9999,
             reposts: 4500,
-            replies: 890,
-            views: "3.4M"
-        },
-        {
-            id: 24,
-            author: "DHS Briefing",
-            handle: "@DHS_updates",
-            verified: true,
-            avatar: "DHS",
-            avatarColor: "linear-gradient(135deg, #ff4757, #ffa502)",
-            time: "1d",
-            category: "homeland",
-            content: `Critical infrastructure sectors designated by DHS — know all 16:\n\n1. Chemical\n2. Commercial Facilities\n3. Communications\n4. Critical Manufacturing\n5. Dams\n6. Defense Industrial Base\n7. Emergency Services\n8. Energy\n9. Financial Services\n10. Food & Agriculture\n11. Government Facilities\n12. Healthcare\n13. IT\n14. Nuclear\n15. Transportation\n16. Water Systems\n\nEvery sector is a target. <span class="post-tag">#CriticalInfrastructure</span> <span class="post-tag">#DHS</span>`,
-            likes: 4100,
-            reposts: 2600,
-            replies: 340,
-            views: "1.3M"
-        },
-        {
-            id: 25,
-            author: "Hack The Box",
-            handle: "@hackthebox_eu",
-            verified: true,
-            avatar: "HTB",
-            avatarColor: "linear-gradient(135deg, #2ed573, #00d4ff)",
-            time: "2d",
-            category: "tools",
-            content: `Beginner roadmap for ethical hacking — where to start:\n\n&#x2022; Learn Linux basics (Bandit on OverTheWire)\n&#x2022; Understand networking (TCP/IP, DNS, HTTP)\n&#x2022; Try TryHackMe's "Pre-Security" path\n&#x2022; Graduate to HTB Starting Point machines\n&#x2022; Learn one scripting language (Python recommended)\n&#x2022; Study for CompTIA Security+ or CEH\n&#x2022; Practice, practice, practice\n\nConsistency beats intensity. <span class="post-tag">#EthicalHacking</span> <span class="post-tag">#CareerPath</span>`,
-            likes: 5600,
-            reposts: 3400,
-            replies: 780,
-            views: "2.1M"
-        },
-        {
-            id: 26,
-            author: "Cloud Security",
-            handle: "@cloud_sec",
-            verified: true,
-            avatar: "CS",
-            avatarColor: "linear-gradient(135deg, #00d4ff, #a855f7)",
-            time: "1d",
-            category: "programming",
-            content: `Biggest cloud misconfigs we see every week:\n\n&#x2022; S3 buckets set to public (still!)\n&#x2022; Overly permissive IAM policies ("Action": "*")\n&#x2022; Security groups with 0.0.0.0/0 on SSH\n&#x2022; Unencrypted EBS volumes\n&#x2022; CloudTrail disabled or not monitored\n&#x2022; No MFA on root account\n\nRun AWS Config or ScoutSuite to find these before attackers do.\n\n<span class="post-tag">#CloudSecurity</span> <span class="post-tag">#Misconfiguration</span>`,
-            likes: 2900,
-            reposts: 1600,
-            replies: 230,
-            views: "670K"
+            replies: 1200,
+            views: "5M"
         }
     ];
 
@@ -2521,14 +2150,7 @@
         { title: "OSINT Tools\nStarter Kit", icon: "&#x1F50E;", color: "linear-gradient(135deg, #e17055, #d63031)", views: "2.0M", category: "osint" }
     ];
 
-    const TRENDING = [
-        { category: "Cybersecurity", topic: "#ZeroDay", count: "45.2K posts" },
-        { category: "Homeland Security", topic: "Critical Infrastructure", count: "23.1K posts" },
-        { category: "Programming", topic: "Rust Memory Safety", count: "18.7K posts" },
-        { category: "Privacy", topic: "End-to-End Encryption", count: "12.3K posts" },
-        { category: "Breaking", topic: "Major Data Breach", count: "89.4K posts" },
-        { category: "OSINT", topic: "Satellite Imagery Analysis", count: "8.9K posts" }
-    ];
+    let TRENDING = [];
 
     const FOLLOWS = [
         { name: "CISA Official", handle: "@CISAgov", avatar: "C", color: "linear-gradient(135deg, #ff4757, #ff6b9d)" },
@@ -2712,14 +2334,7 @@
         }
     };
 
-    const LIVE_NEWS = [
-        { time: "2m ago", text: "CISA adds 3 new CVEs to Known Exploited Vulnerabilities catalog", severity: "high" },
-        { time: "18m ago", text: "Major ISP reports DDoS attack peaking at 3.2 Tbps", severity: "critical" },
-        { time: "45m ago", text: "New phishing campaign targets healthcare organizations", severity: "medium" },
-        { time: "1h ago", text: "Windows Defender update includes new ransomware protections", severity: "info" },
-        { time: "2h ago", text: "FBI releases flash advisory on BEC scam targeting schools", severity: "high" },
-        { time: "3h ago", text: "Google patches Chrome zero-day — update immediately", severity: "critical" }
-    ];
+    let LIVE_NEWS = [];
 
     const PROFILES = {
         "@CISAgov": {
@@ -4296,16 +3911,7 @@
     // ═══ TICKER ═══
 
     const TICKER_EVENTS = [
-        { severity: 'var(--red)', text: 'CVE-2026-21345 actively exploited — federal agencies must patch within 48h' },
-        { severity: 'var(--orange)', text: 'APT41 shifts to LOLBin tactics targeting critical infrastructure' },
-        { severity: 'var(--red)', text: 'DarkVault ransomware variant detected — ChaCha20+RSA-4096 hybrid encryption' },
-        { severity: 'var(--purple)', text: 'DHS NTAS bulletin updated — domestic violent extremism remains primary threat' },
-        { severity: 'var(--accent)', text: '50M+ users affected in major tech company data breach — password resets underway' },
-        { severity: 'var(--green)', text: 'Chrome zero-day patched by Google — update immediately' },
-        { severity: 'var(--orange)', text: 'New phishing campaign targets healthcare organizations with AI-generated emails' },
-        { severity: 'var(--red)', text: 'FBI flash advisory: BEC scam wave targeting US school districts' },
-        { severity: 'var(--accent)', text: 'CISA adds 3 new CVEs to Known Exploited Vulnerabilities catalog' },
-        { severity: 'var(--orange)', text: 'ShadowGrab infostealer campaign — exfils browser creds and crypto wallets' }
+        { severity: 'var(--accent)', text: 'Loading live threat data...' }
     ];
 
     function renderTicker() {
@@ -4831,160 +4437,171 @@
 
     // ═══ LIVE DATA ENGINE ═══
 
-    // Hacker News API — security/cyber stories for the feed
+    let liveDataLoaded = false;
+
+    function showLoadingState() {
+        const container = document.getElementById('feedPosts');
+        if (!container) return;
+        const skeletons = Array(4).fill('<div class="post" style="pointer-events:none;"><div class="post-header"><div class="skeleton" style="width:40px;height:40px;border-radius:50%;"></div><div style="flex:1"><div class="skeleton" style="width:60%;height:14px;margin-bottom:8px;"></div><div class="skeleton" style="width:100%;height:12px;margin-bottom:4px;"></div><div class="skeleton" style="width:80%;height:12px;"></div></div></div></div>').join('');
+        container.innerHTML += skeletons;
+    }
+
     async function fetchHackerNews() {
         try {
             const res = await fetch('https://hacker-news.firebaseio.com/v0/topstories.json');
             const ids = await res.json();
             const stories = await Promise.all(
-                ids.slice(0, 40).map(id =>
-                    fetch(`https://hacker-news.firebaseio.com/v0/item/${id}.json`).then(r => r.json())
+                ids.slice(0, 50).map(id =>
+                    fetch('https://hacker-news.firebaseio.com/v0/item/' + id + '.json').then(r => r.json())
                 )
             );
+            const secKeywords = ['security','hack','vuln','breach','cyber','privacy','exploit','malware','ransomware','zero-day','cve','attack','phishing','encryption','tls','ssl','firewall','linux','rust','python','api','auth','token','password','nsa','fbi','cisa','backdoor','patch','bug','inject','xss','sql','dns','cloud','aws','docker','kubernetes','open source','github','data','leak','tor','vpn','ai','llm','gpt','infosec','pentest','threat','apt','osint','network','server','crypto','key','cert'];
+            const relevant = stories.filter(s => s && s.title && secKeywords.some(kw => s.title.toLowerCase().includes(kw)));
+            const allStories = relevant.length >= 8 ? relevant : stories.filter(s => s && s.title);
 
-            // Filter for security/tech relevant stories
-            const secKeywords = ['security', 'hack', 'vuln', 'breach', 'cyber', 'privacy', 'exploit', 'malware', 'ransomware', 'zero-day', 'cve', 'attack', 'phishing', 'encryption', 'tls', 'ssl', 'firewall', 'linux', 'rust', 'python', 'api', 'auth', 'token', 'password', 'nsa', 'fbi', 'cisa', 'backdoor', 'patch', 'bug', 'inject', 'xss', 'sql', 'dns', 'cloud', 'aws', 'docker', 'kubernetes', 'open source', 'github', 'data', 'leak', 'tor', 'vpn', 'ai', 'llm', 'gpt'];
-
-            const relevant = stories.filter(s => {
-                if (!s || !s.title) return false;
-                const t = s.title.toLowerCase();
-                return secKeywords.some(kw => t.includes(kw));
-            });
-
-            const allStories = relevant.length >= 5 ? relevant : stories.filter(s => s && s.title);
-
-            allStories.slice(0, 12).forEach((story, i) => {
+            allStories.slice(0, 20).forEach(story => {
+                if (POSTS.find(p => p.id === 100000 + story.id)) return;
                 const category = categorizeStory(story.title);
                 const timeAgo = getTimeAgo(story.time * 1000);
-
                 POSTS.push({
                     id: 100000 + story.id,
-                    author: 'Hacker News',
-                    handle: '@hackernews',
-                    verified: true,
-                    avatar: 'HN',
-                    avatarColor: 'linear-gradient(135deg, #ff6600, #ff9933)',
-                    time: timeAgo,
-                    category: category,
-                    content: `${escapeHtml(story.title)}${story.url ? `\n\n<a href="${escapeHtml(story.url)}" target="_blank" rel="noopener">${escapeHtml(new URL(story.url).hostname)}</a>` : ''}\n\n<span class="post-tag">#HackerNews</span> <span class="post-tag">#${category}</span>`,
-                    likes: story.score || 0,
-                    reposts: Math.floor((story.score || 0) / 3),
-                    replies: story.descendants || 0,
-                    views: formatNum((story.score || 0) * 15)
+                    author: 'Hacker News', handle: '@hackernews', verified: true,
+                    avatar: 'HN', avatarColor: 'linear-gradient(135deg, #ff6600, #ff9933)',
+                    time: timeAgo, category: category,
+                    content: escapeHtml(story.title) + (story.url ? '\n\n<a href="' + escapeHtml(story.url) + '" target="_blank" rel="noopener">' + escapeHtml(new URL(story.url).hostname) + '</a>' : '') + '\n\n<span class="post-tag">#HackerNews</span> <span class="post-tag">#' + category + '</span>',
+                    likes: story.score || 0, reposts: Math.floor((story.score || 0) / 3),
+                    replies: story.descendants || 0, views: formatNum((story.score || 0) * 15)
                 });
             });
-
-            renderPosts();
-            updateLiveFeedWidget(allStories.slice(0, 6));
-            console.log(`[CyberWatch] Loaded ${allStories.length} stories from Hacker News`);
-        } catch (e) {
-            console.log('[CyberWatch] HN fetch failed, using static data:', e.message);
-        }
+            updateLiveFeedWidget(allStories.slice(0, 8));
+            generateTrending(allStories.slice(0, 30));
+            allStories.slice(0, 5).forEach(s => {
+                TICKER_EVENTS.push({ severity: s.score > 200 ? 'var(--red)' : s.score > 100 ? 'var(--orange)' : 'var(--accent)', text: s.title.substring(0, 120) });
+            });
+            renderPosts(); renderTicker();
+            console.log('[CyberWatch] Loaded ' + allStories.length + ' stories from Hacker News');
+        } catch (e) { console.log('[CyberWatch] HN fetch failed:', e.message); }
     }
 
-    // NVD CVE API — latest vulnerabilities for alerts & ticker
+    async function fetchReddit() {
+        const subs = ['netsec', 'cybersecurity'];
+        for (const sub of subs) {
+            try {
+                const res = await fetch('https://www.reddit.com/r/' + sub + '/hot.json?limit=15');
+                const data = await res.json();
+                if (!data.data || !data.data.children) continue;
+                data.data.children.forEach(child => {
+                    const p = child.data;
+                    if (!p.title || p.stickied) return;
+                    const rid = 300000 + parseInt(p.id, 36);
+                    if (POSTS.find(post => post.id === rid)) return;
+                    const category = categorizeStory(p.title);
+                    const timeAgo = getTimeAgo(p.created_utc * 1000);
+                    const handle = sub === 'netsec' ? '@r_netsec' : '@r_cybersecurity';
+                    const author = sub === 'netsec' ? 'r/netsec' : 'r/cybersecurity';
+                    const avatar = sub === 'netsec' ? 'NS' : 'RC';
+                    const color = sub === 'netsec' ? 'linear-gradient(135deg, #2ed573, #00d4ff)' : 'linear-gradient(135deg, #a855f7, #ff6b9d)';
+                    let text = escapeHtml(p.title);
+                    if (p.url && !p.is_self) text += '\n\n<a href="' + escapeHtml(p.url) + '" target="_blank" rel="noopener">' + escapeHtml(new URL(p.url).hostname) + '</a>';
+                    if (p.selftext) text += '\n\n' + escapeHtml(p.selftext.substring(0, 200)) + (p.selftext.length > 200 ? '...' : '');
+                    text += '\n\n<span class="post-tag">#Reddit</span> <span class="post-tag">#' + sub + '</span>';
+                    POSTS.push({
+                        id: rid, author: author, handle: handle, verified: true,
+                        avatar: avatar, avatarColor: color, time: timeAgo, category: category,
+                        content: text, likes: p.score || 0, reposts: Math.floor((p.score || 0) / 4),
+                        replies: p.num_comments || 0, views: formatNum((p.score || 0) * 10)
+                    });
+                });
+                console.log('[CyberWatch] Loaded posts from r/' + sub);
+            } catch (e) { console.log('[CyberWatch] Reddit r/' + sub + ' fetch failed:', e.message); }
+        }
+        renderPosts();
+    }
+
     async function fetchLatestCVEs() {
         try {
             const now = new Date();
             const weekAgo = new Date(now - 7 * 24 * 60 * 60 * 1000);
             const fmt = d => d.toISOString().replace(/\.\d+Z/, '.000');
-            const url = `https://services.nvd.nist.gov/rest/json/cves/2.0?pubStartDate=${fmt(weekAgo)}&pubEndDate=${fmt(now)}&resultsPerPage=20`;
-
+            const url = 'https://services.nvd.nist.gov/rest/json/cves/2.0?pubStartDate=' + fmt(weekAgo) + '&pubEndDate=' + fmt(now) + '&resultsPerPage=20';
             const res = await fetch(url);
             const data = await res.json();
-
             if (data.vulnerabilities) {
                 const cves = data.vulnerabilities.map(v => {
                     const cve = v.cve;
-                    const cvss = cve.metrics?.cvssMetricV31?.[0]?.cvssData?.baseScore
-                        || cve.metrics?.cvssMetricV2?.[0]?.cvssData?.baseScore
-                        || 0;
+                    const cvss = cve.metrics?.cvssMetricV31?.[0]?.cvssData?.baseScore || cve.metrics?.cvssMetricV2?.[0]?.cvssData?.baseScore || 0;
                     const severity = cvss >= 9 ? 'critical' : cvss >= 7 ? 'high' : cvss >= 4 ? 'medium' : 'low';
                     const desc = cve.descriptions?.find(d => d.lang === 'en')?.value || 'No description';
-
                     return { id: cve.id, cvss, severity, desc: desc.substring(0, 200) };
                 });
-
-                // Update the stat counter
                 const cveEl = document.getElementById('statCves');
                 if (cveEl) cveEl.textContent = data.totalResults || cves.length;
-
-                // Add top CVEs to ticker
                 cves.slice(0, 5).forEach(cve => {
-                    TICKER_EVENTS.push({
-                        severity: cve.severity === 'critical' ? 'var(--red)' : cve.severity === 'high' ? 'var(--orange)' : 'var(--accent)',
-                        text: `${cve.id} (CVSS ${cve.cvss}) — ${cve.desc.substring(0, 100)}...`
-                    });
+                    TICKER_EVENTS.push({ severity: cve.severity === 'critical' ? 'var(--red)' : cve.severity === 'high' ? 'var(--orange)' : 'var(--accent)', text: cve.id + ' (CVSS ' + cve.cvss + ') — ' + cve.desc.substring(0, 100) + '...' });
                 });
-                renderTicker();
-
-                // Add critical/high CVEs as feed posts
-                cves.filter(c => c.cvss >= 7).slice(0, 3).forEach(cve => {
+                cves.filter(c => c.cvss >= 7).slice(0, 5).forEach(cve => {
                     const sevClass = cve.severity === 'critical' ? 'severity-critical' : 'severity-high';
-                    POSTS.splice(2, 0, {
+                    POSTS.splice(1, 0, {
                         id: 200000 + Math.random() * 100000 | 0,
-                        author: 'NVD / NIST',
-                        handle: '@nvd_nist',
-                        verified: true,
-                        avatar: 'NVD',
-                        avatarColor: 'linear-gradient(135deg, #ff4757, #ff6b9d)',
-                        time: 'today',
-                        category: 'cyber',
-                        severity: cve.severity,
-                        content: `<span class="severity ${sevClass}">${cve.severity.toUpperCase()} — CVSS ${cve.cvss}</span> ${escapeHtml(cve.id)}\n\n${escapeHtml(cve.desc)}\n\n<span class="post-tag">#CVE</span> <span class="post-tag">#VulnAlert</span>`,
-                        likes: Math.floor(cve.cvss * 300),
-                        reposts: Math.floor(cve.cvss * 100),
-                        replies: Math.floor(cve.cvss * 40),
-                        views: formatNum(Math.floor(cve.cvss * 5000))
+                        author: 'NVD / NIST', handle: '@nvd_nist', verified: true,
+                        avatar: 'NVD', avatarColor: 'linear-gradient(135deg, #ff4757, #ff6b9d)',
+                        time: 'today', category: 'cyber', severity: cve.severity,
+                        content: '<span class="severity ' + sevClass + '">' + cve.severity.toUpperCase() + ' — CVSS ' + cve.cvss + '</span> ' + escapeHtml(cve.id) + '\n\n' + escapeHtml(cve.desc) + '\n\n<span class="post-tag">#CVE</span> <span class="post-tag">#VulnAlert</span>',
+                        likes: Math.floor(cve.cvss * 300), reposts: Math.floor(cve.cvss * 100),
+                        replies: Math.floor(cve.cvss * 40), views: formatNum(Math.floor(cve.cvss * 5000))
                     });
                 });
-
-                renderPosts();
-                console.log(`[CyberWatch] Loaded ${cves.length} CVEs from NVD`);
+                renderPosts(); renderTicker();
+                console.log('[CyberWatch] Loaded ' + cves.length + ' CVEs from NVD');
             }
-        } catch (e) {
-            console.log('[CyberWatch] NVD fetch failed:', e.message);
-        }
+        } catch (e) { console.log('[CyberWatch] NVD fetch failed:', e.message); }
     }
 
-    // CoinGecko — crypto prices for ticker
     async function fetchCryptoPrices() {
         try {
             const res = await fetch('https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,ethereum&vs_currencies=usd&include_24hr_change=true');
             const data = await res.json();
-
             if (data.bitcoin) {
-                const btc = data.bitcoin;
-                const eth = data.ethereum;
-                const btcDir = btc.usd_24h_change >= 0 ? '&#x25B2;' : '&#x25BC;';
-                const ethDir = eth.usd_24h_change >= 0 ? '&#x25B2;' : '&#x25BC;';
-                const btcColor = btc.usd_24h_change >= 0 ? 'var(--green)' : 'var(--red)';
-                const ethColor = eth.usd_24h_change >= 0 ? 'var(--green)' : 'var(--red)';
-
+                const btc = data.bitcoin, eth = data.ethereum;
                 TICKER_EVENTS.push(
-                    { severity: btcColor, text: `BTC $${btc.usd.toLocaleString()} ${btcDir} ${btc.usd_24h_change.toFixed(1)}%` },
-                    { severity: ethColor, text: `ETH $${eth.usd.toLocaleString()} ${ethDir} ${eth.usd_24h_change.toFixed(1)}%` }
+                    { severity: btc.usd_24h_change >= 0 ? 'var(--green)' : 'var(--red)', text: 'BTC $' + btc.usd.toLocaleString() + ' ' + (btc.usd_24h_change >= 0 ? '\u25B2' : '\u25BC') + ' ' + btc.usd_24h_change.toFixed(1) + '%' },
+                    { severity: eth.usd_24h_change >= 0 ? 'var(--green)' : 'var(--red)', text: 'ETH $' + eth.usd.toLocaleString() + ' ' + (eth.usd_24h_change >= 0 ? '\u25B2' : '\u25BC') + ' ' + eth.usd_24h_change.toFixed(1) + '%' }
                 );
                 renderTicker();
                 console.log('[CyberWatch] Crypto prices loaded');
             }
-        } catch (e) {
-            console.log('[CyberWatch] Crypto fetch failed:', e.message);
-        }
+        } catch (e) { console.log('[CyberWatch] Crypto fetch failed:', e.message); }
     }
 
-    // Helper: categorize a HN story title
+    function generateTrending(stories) {
+        if (!stories || !stories.length) return;
+        const wordFreq = {};
+        const stopWords = new Set(['the','a','an','is','are','was','were','in','on','at','to','for','of','and','or','but','with','by','from','as','this','that','it','its','has','have','had','be','been','will','not','no','can','do','how','what','why','who','which','new','all','your','you','about','just','more','been','than','into','over','also','after','now','even','back','only','most','very','some','them','then','when','where','could','would','should','these','those','there','here','they','their','much','other','using','show']);
+        stories.forEach(s => {
+            if (!s || !s.title) return;
+            s.title.split(/\s+/).forEach(w => {
+                w = w.toLowerCase().replace(/[^a-z0-9]/g, '');
+                if (w.length > 3 && !stopWords.has(w)) wordFreq[w] = (wordFreq[w] || 0) + (s.score || 1);
+            });
+        });
+        const sorted = Object.entries(wordFreq).sort((a, b) => b[1] - a[1]).slice(0, 6);
+        const cats = ['Cybersecurity', 'Technology', 'Programming', 'Privacy', 'Security', 'Open Source'];
+        TRENDING = sorted.map(([word, score], i) => ({
+            category: cats[i % cats.length], topic: '#' + word, count: formatNum(score * 50) + ' posts'
+        }));
+        renderTrending();
+    }
+
     function categorizeStory(title) {
         const t = title.toLowerCase();
-        if (/hack|breach|attack|malware|ransom|exploit|vuln|cve|zero.day|backdoor/.test(t)) return 'cyber';
-        if (/privacy|track|surveillance|encrypt|tor|vpn|gdpr/.test(t)) return 'privacy';
-        if (/python|rust|javascript|react|api|code|git|docker|kubernetes|cloud|aws|linux/.test(t)) return 'programming';
+        if (/hack|breach|attack|malware|ransom|exploit|vuln|cve|zero.day|backdoor|apt|threat/.test(t)) return 'cyber';
+        if (/privacy|track|surveillance|encrypt|tor|vpn|gdpr|fingerprint/.test(t)) return 'privacy';
+        if (/python|rust|javascript|react|api|code|git|docker|kubernetes|cloud|aws|linux|golang|typescript/.test(t)) return 'programming';
         if (/osint|recon|intelligence|investigate/.test(t)) return 'osint';
-        if (/fbi|nsa|cisa|government|federal|homeland|dhs|law/.test(t)) return 'homeland';
+        if (/fbi|nsa|cisa|government|federal|homeland|dhs|law|policy/.test(t)) return 'homeland';
         return 'news';
     }
 
-    // Helper: relative time from timestamp
     function getTimeAgo(timestamp) {
         const seconds = Math.floor((Date.now() - timestamp) / 1000);
         if (seconds < 60) return 'just now';
@@ -4993,41 +4610,30 @@
         return Math.floor(seconds / 86400) + 'd';
     }
 
-    // Update the live feed widget in the right sidebar with real data
     function updateLiveFeedWidget(stories) {
         const container = document.getElementById('liveFeed');
         if (!container || !stories.length) return;
-
         container.innerHTML = stories.map(s => {
             const timeAgo = getTimeAgo(s.time * 1000);
             const color = s.score > 200 ? 'var(--red)' : s.score > 100 ? 'var(--orange)' : 'var(--accent)';
-            return `
-                <div style="padding: 8px 0; border-bottom: 1px solid var(--border); font-size: 13px; cursor: pointer;" onclick="window.open('https://news.ycombinator.com/item?id=${s.id}', '_blank')">
-                    <div style="color: ${color}; font-size: 11px; font-weight: 600;">${s.score} pts &#xB7; ${timeAgo}</div>
-                    <div style="margin-top: 2px; color: var(--text-secondary);">${escapeHtml(s.title)}</div>
-                </div>
-            `;
+            return '<div style="padding:8px 0;border-bottom:1px solid var(--border);font-size:13px;cursor:pointer;" onclick="window.open(\'https://news.ycombinator.com/item?id=' + s.id + '\', \'_blank\')"><div style="color:' + color + ';font-size:11px;font-weight:600;">' + s.score + ' pts \u00B7 ' + timeAgo + '</div><div style="margin-top:2px;color:var(--text-secondary);">' + escapeHtml(s.title) + '</div></div>';
         }).join('');
     }
 
-    // Add HN and NVD profiles so clicking works
-    PROFILES['@hackernews'] = {
-        name: 'Hacker News', handle: '@hackernews', verified: true, avatar: 'HN',
-        avatarColor: 'linear-gradient(135deg, #ff6600, #ff9933)',
-        bannerColor: 'linear-gradient(135deg, #1a0a00, #331a00, #1a0a00)',
-        bio: 'Live feed from Hacker News — the top stories in tech, security, and startups. Curated by the community.',
-        location: 'San Francisco, CA', link: 'news.ycombinator.com', joined: 'February 2007',
-        following: 0, followers: 5000000, badges: ['verified'], category: 'news'
-    };
+    async function loadAllLiveData() {
+        showLoadingState();
+        TICKER_EVENTS.length = 0;
+        await Promise.allSettled([fetchHackerNews(), fetchReddit(), fetchLatestCVEs(), fetchCryptoPrices()]);
+        liveDataLoaded = true;
+        renderPosts(); renderTicker(); renderTrending();
+        console.log('[CyberWatch] All live data loaded. Total posts:', POSTS.length);
+    }
 
-    PROFILES['@nvd_nist'] = {
-        name: 'NVD / NIST', handle: '@nvd_nist', verified: true, avatar: 'NVD',
-        avatarColor: 'linear-gradient(135deg, #ff4757, #ff6b9d)',
-        bannerColor: 'linear-gradient(135deg, #1a0000, #330000, #1a0000)',
-        bio: 'National Vulnerability Database — real-time CVE data from NIST. The authoritative source for vulnerability information.',
-        location: 'Gaithersburg, MD', link: 'nvd.nist.gov', joined: 'October 2000',
-        following: 0, followers: 2000000, badges: ['gov', 'verified'], category: 'cyber'
-    };
+    PROFILES['@cyberwatch'] = { name: 'CyberWatch', handle: '@cyberwatch', verified: true, avatar: 'CW', avatarColor: 'linear-gradient(135deg, #00d4ff, #a855f7)', bannerColor: 'linear-gradient(135deg, #000a1a, #0a0030, #001a2a)', bio: 'Official CyberWatch platform account. Real-time cybersecurity intelligence, education, and community.', location: 'Global', link: 'cyberwatch.io', joined: 'April 2026', following: 50, followers: 5000000, badges: ['verified', 'founder'], category: 'cyber' };
+    PROFILES['@hackernews'] = { name: 'Hacker News', handle: '@hackernews', verified: true, avatar: 'HN', avatarColor: 'linear-gradient(135deg, #ff6600, #ff9933)', bannerColor: 'linear-gradient(135deg, #1a0a00, #331a00, #1a0a00)', bio: 'Live feed from Hacker News top stories in tech, security, and startups.', location: 'San Francisco, CA', link: 'news.ycombinator.com', joined: 'February 2007', following: 0, followers: 5000000, badges: ['verified'], category: 'news' };
+    PROFILES['@nvd_nist'] = { name: 'NVD / NIST', handle: '@nvd_nist', verified: true, avatar: 'NVD', avatarColor: 'linear-gradient(135deg, #ff4757, #ff6b9d)', bannerColor: 'linear-gradient(135deg, #1a0000, #330000, #1a0000)', bio: 'National Vulnerability Database real-time CVE data from NIST.', location: 'Gaithersburg, MD', link: 'nvd.nist.gov', joined: 'October 2000', following: 0, followers: 2000000, badges: ['gov', 'verified'], category: 'cyber' };
+    PROFILES['@r_netsec'] = { name: 'r/netsec', handle: '@r_netsec', verified: true, avatar: 'NS', avatarColor: 'linear-gradient(135deg, #2ed573, #00d4ff)', bannerColor: 'linear-gradient(135deg, #001a0a, #002a1a, #001a0a)', bio: 'Information Security News and Discussion from Reddit.', location: 'Reddit', link: 'reddit.com/r/netsec', joined: 'January 2008', following: 0, followers: 800000, badges: ['verified'], category: 'cyber' };
+    PROFILES['@r_cybersecurity'] = { name: 'r/cybersecurity', handle: '@r_cybersecurity', verified: true, avatar: 'RC', avatarColor: 'linear-gradient(135deg, #a855f7, #ff6b9d)', bannerColor: 'linear-gradient(135deg, #0a001a, #1a0030, #0a001a)', bio: 'Cybersecurity career advice, news, and discussion from Reddit.', location: 'Reddit', link: 'reddit.com/r/cybersecurity', joined: 'March 2011', following: 0, followers: 1200000, badges: ['verified'], category: 'cyber' };
 
     // ═══ INIT ═══
     document.addEventListener('DOMContentLoaded', () => {
@@ -5043,14 +4649,11 @@
         updateNotifBadge();
         applySettings();
 
-        // Fire live data fetches (non-blocking)
-        fetchHackerNews();
-        fetchLatestCVEs();
-        fetchCryptoPrices();
+        // Load all live data in parallel
+        loadAllLiveData();
 
-        // Refresh live data every 5 minutes
-        setInterval(fetchHackerNews, 5 * 60 * 1000);
-        setInterval(fetchCryptoPrices, 3 * 60 * 1000);
+        // Refresh every 5 minutes
+        setInterval(loadAllLiveData, 5 * 60 * 1000);
 
         // Close modal on Escape
         document.addEventListener('keydown', e => {
