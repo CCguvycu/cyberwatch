@@ -2132,10 +2132,10 @@ Everything you see in this feed is <strong>live data</strong> from real sources:
 &#x2022; <strong>CoinGecko</strong> — live crypto prices
 
 Learn, explore, and stay informed. <span class="post-tag">#CyberWatch</span> <span class="post-tag">#LiveData</span>`,
-            likes: 9999,
-            reposts: 4500,
-            replies: 1200,
-            views: "5M"
+            likes: 0,
+            reposts: 0,
+            replies: 0,
+            views: "0"
         }
     ];
 
@@ -3258,18 +3258,7 @@ Learn, explore, and stay informed. <span class="post-tag">#CyberWatch</span> <sp
     // ═══ NOTIFICATIONS ═══
 
     const NOTIFICATIONS = [
-        { id: 1, type: 'like', icon: '&#x2764;', iconClass: 'notif-icon-like', user: 'CISA Official', handle: '@CISAgov', text: 'liked your post', preview: 'Important reminder about patching KEV vulnerabilities...', time: '2m ago', read: false },
-        { id: 2, type: 'repost', icon: '&#x1F501;', iconClass: 'notif-icon-repost', user: 'CyberWatch Intel', handle: '@cyberwatch_intel', text: 'reposted your post', preview: 'Thread on the latest APT41 campaign...', time: '5m ago', read: false },
-        { id: 3, type: 'follow', icon: '&#x1F464;', iconClass: 'notif-icon-follow', user: 'Malware Lab', handle: '@malware_lab', text: 'followed you', preview: null, time: '12m ago', read: false },
-        { id: 4, type: 'mention', icon: '&#x1F4AC;', iconClass: 'notif-icon-mention', user: 'SecDev Daily', handle: '@secdev_daily', text: 'mentioned you in a post', preview: '@ArukuX Great point about input validation. Here\'s another approach...', time: '25m ago', read: false },
-        { id: 5, type: 'like', icon: '&#x2764;', iconClass: 'notif-icon-like', user: 'Privacy Advocate', handle: '@privacy_first', text: 'liked your post', preview: 'Browser fingerprinting tips...', time: '1h ago', read: false },
-        { id: 6, type: 'alert', icon: '&#x26A0;', iconClass: 'notif-icon-alert', user: 'CyberWatch System', handle: '@system', text: 'New critical vulnerability alert', preview: 'CVE-2026-21345 is being actively exploited in the wild. Check the Alerts page.', time: '1h ago', read: false },
-        { id: 7, type: 'follow', icon: '&#x1F464;', iconClass: 'notif-icon-follow', user: 'OSINT Curious', handle: '@osintcurious', text: 'followed you', preview: null, time: '2h ago', read: true },
-        { id: 8, type: 'repost', icon: '&#x1F501;', iconClass: 'notif-icon-repost', user: 'Breaking Cyber', handle: '@breaking_cyber', text: 'reposted your post', preview: 'Analysis of the latest data breach...', time: '3h ago', read: true },
-        { id: 9, type: 'milestone', icon: '&#x1F3C6;', iconClass: 'notif-icon-milestone', user: 'CyberWatch', handle: '@system', text: 'Your post reached 1,000 views!', preview: null, time: '4h ago', read: true },
-        { id: 10, type: 'like', icon: '&#x2764;', iconClass: 'notif-icon-like', user: 'Hack The Box', handle: '@hackthebox_eu', text: 'liked your post', preview: 'Beginner pentesting roadmap...', time: '5h ago', read: true },
-        { id: 11, type: 'mention', icon: '&#x1F4AC;', iconClass: 'notif-icon-mention', user: 'NetSec Engineer', handle: '@netsec_eng', text: 'replied to your post', preview: '@ArukuX You should also look into nftables for modern firewall configs.', time: '6h ago', read: true },
-        { id: 12, type: 'system', icon: '&#x1F6E1;', iconClass: 'notif-icon-system', user: 'CyberWatch', handle: '@system', text: 'Welcome to CyberWatch! Complete your first lesson to earn XP.', preview: null, time: '1d ago', read: true }
+        { id: 1, type: 'system', icon: '&#x1F6E1;', iconClass: 'notif-icon-system', user: 'CyberWatch', handle: '@system', text: 'Welcome to CyberWatch! Complete your first lesson to earn XP.', preview: null, time: 'just now', read: false }
     ];
 
     let notifFilter = 'all';
@@ -3394,32 +3383,7 @@ Learn, explore, and stay informed. <span class="post-tag">#CyberWatch</span> <sp
     const COMMENTS = {};
 
     function seedComments() {
-        COMMENTS[1] = [
-            { id: 'c1', author: 'NetSec Engineer', handle: '@netsec_eng', avatar: 'NE', avatarColor: 'linear-gradient(135deg, #00d4ff, #2ed573)', text: 'Already patched our entire fleet. The IOCs from CISA were spot on — we caught 3 attempted connections to the C2 within the first hour.', time: '1m ago', likes: 234 },
-            { id: 'c2', author: 'Cloud Security', handle: '@cloud_sec', avatar: 'CS', avatarColor: 'linear-gradient(135deg, #00d4ff, #a855f7)', text: 'Any guidance on cloud-hosted instances? Our AWS WAF rules need updating for this one.', time: '5m ago', likes: 89 },
-            { id: 'c3', author: 'ArukuX', handle: '@ArukuX', avatar: 'AX', avatarColor: 'linear-gradient(135deg, #00d4ff, #a855f7)', verified: true, text: 'Critical stuff. Everyone patch now — this is actively being exploited in the wild.', time: '8m ago', likes: 567 }
-        ];
-        COMMENTS[2] = [
-            { id: 'c4', author: 'Malware Lab', handle: '@malware_lab', avatar: 'ML', avatarColor: 'linear-gradient(135deg, #ff4757, #a855f7)', text: 'We\'ve been tracking APT41 for months. The shift to LOLBins makes detection significantly harder — traditional AV won\'t catch this.', time: '10m ago', likes: 445 },
-            { id: 'c5', author: 'OSINT Curious', handle: '@osintcurious', avatar: 'OC', avatarColor: 'linear-gradient(135deg, #ffa502, #ff4757)', text: 'The DNS tunneling component is new. Any YARA rules available for the initial loader?', time: '12m ago', likes: 198 }
-        ];
-        COMMENTS[3] = [
-            { id: 'c6', author: 'Hack The Box', handle: '@hackthebox_eu', avatar: 'HTB', avatarColor: 'linear-gradient(135deg, #2ed573, #00d4ff)', text: 'We actually have a lab challenge based on this exact pattern. Search for "Input Validation" in our academy.', time: '20m ago', likes: 312 },
-            { id: 'c7', author: 'Privacy Advocate', handle: '@privacy_first', avatar: 'PA', avatarColor: 'linear-gradient(135deg, #a855f7, #ff6b9d)', text: 'People underestimate how many production apps still concatenate strings into SQL. In 2026. Wild.', time: '25m ago', likes: 178 },
-            { id: 'c8', author: 'ArukuX', handle: '@ArukuX', avatar: 'AX', avatarColor: 'linear-gradient(135deg, #00d4ff, #a855f7)', verified: true, text: 'Great example. ORMs solve this for most frameworks — SQLAlchemy for Python, Prisma for Node, etc.', time: '28m ago', likes: 445 }
-        ];
-        COMMENTS[4] = [
-            { id: 'c9', author: 'SecDev Daily', handle: '@secdev_daily', avatar: 'SD', avatarColor: 'linear-gradient(135deg, #2ed573, #00d4ff)', text: 'Firefox + uBlock Origin is still the best combo for most people. Tor is overkill unless your threat model requires it.', time: '45m ago', likes: 567 }
-        ];
-        COMMENTS[8] = [
-            { id: 'c10', author: 'CISA Official', handle: '@CISAgov', avatar: 'C', avatarColor: 'linear-gradient(135deg, #ff4757, #ff6b9d)', text: 'We are actively tracking DarkVault. Updated signatures have been pushed to our Automated Indicator Sharing (AIS) feed.', time: '3h ago', likes: 890 },
-            { id: 'c11', author: 'DHS Briefing', handle: '@DHS_updates', avatar: 'DHS', avatarColor: 'linear-gradient(135deg, #ff4757, #ffa502)', text: 'Healthcare sector has been hit hardest. If you\'re in healthcare IT, check the HC3 bulletin released today.', time: '4h ago', likes: 234 }
-        ];
-        COMMENTS[10] = [
-            { id: 'c12', author: 'Breaking Cyber', handle: '@breaking_cyber', avatar: 'BC', avatarColor: 'linear-gradient(135deg, #f1c40f, #ffa502)', text: 'UPDATE: Company confirms the breach vector was a compromised employee VPN credential. No MFA was enforced on that account.', time: '5h ago', likes: 1200 },
-            { id: 'c13', author: 'CyberWatch Intel', handle: '@cyberwatch_intel', avatar: 'CW', avatarColor: 'linear-gradient(135deg, #00d4ff, #a855f7)', text: 'This is why MFA everywhere is non-negotiable. One credential without MFA = game over.', time: '5h ago', likes: 890 },
-            { id: 'c14', author: 'ArukuX', handle: '@ArukuX', avatar: 'AX', avatarColor: 'linear-gradient(135deg, #00d4ff, #a855f7)', verified: true, text: 'If you\'re still reusing passwords in 2026, this is your wake-up call. Password manager + MFA on everything.', time: '6h ago', likes: 678 }
-        ];
+        // Comments are user-generated only — no fake data
     }
 
     function getComments(postId) {
@@ -3801,11 +3765,6 @@ Learn, explore, and stay informed. <span class="post-tag">#CyberWatch</span> <sp
         updateCompose();
         renderPosts();
         awardXP(10, 'Post published! +10 XP');
-
-        // Simulate engagement notifications after posting
-        setTimeout(() => addNotification('like', 'CyberWatch Intel', '@cyberwatch_intel', 'liked your post', content.substring(0, 80)), 3000);
-        setTimeout(() => addNotification('repost', 'SecDev Daily', '@secdev_daily', 'reposted your post', content.substring(0, 80)), 8000);
-        setTimeout(() => addNotification('like', 'OSINT Curious', '@osintcurious', 'liked your post', null), 15000);
     }
 
     function openLesson(key) {
