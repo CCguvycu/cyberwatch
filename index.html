@@ -317,7 +317,7 @@
 
         .post-content {
             margin-top: 8px;
-            font-size: 15px;
+            font-size: var(--post-font-size, 15px);
             line-height: 1.7;
             word-wrap: break-word;
             overflow-wrap: break-word;
@@ -575,7 +575,7 @@
         }
 
         .trending-item:last-child { border-bottom: none; }
-        .trending-item:hover { background: var(--bg-hover); margin: 0 -16px; padding: 10px 16px; border-radius: 8px; }
+        .trending-item:hover { background: var(--bg-hover); border-radius: 8px; }
 
         .trending-category { font-size: 12px; color: var(--text-secondary); }
         .trending-topic { font-weight: 700; font-size: 14px; margin: 2px 0; }
@@ -2334,7 +2334,6 @@ Learn, explore, and stay informed. <span class="post-tag">#CyberWatch</span> <sp
         }
     };
 
-    let LIVE_NEWS = [];
 
     const PROFILES = {
         "@CISAgov": {
@@ -2556,7 +2555,7 @@ Learn, explore, and stay informed. <span class="post-tag">#CyberWatch</span> <sp
                 <div class="short-card-bg" style="background: ${s.color}">
                     <div class="short-card-icon">${s.icon}</div>
                     <div class="short-card-label">${s.title}</div>
-                    <div class="short-card-views">${s.views} views</div>
+                    <div class="short-card-views">${s.views}</div>
                 </div>
             </div>
         `).join('');
@@ -2569,7 +2568,11 @@ Learn, explore, and stay informed. <span class="post-tag">#CyberWatch</span> <sp
 
     function renderPosts(filter = 'all') {
         const container = document.getElementById('feedPosts');
-        const filtered = filter === 'all' ? POSTS : POSTS.filter(p => p.category === filter);
+        let filtered = filter === 'all' ? [...POSTS] : POSTS.filter(p => p.category === filter);
+        // Apply feed sort setting
+        if (SETTINGS.feedSort === 'trending') filtered.sort((a, b) => (b.likes || 0) - (a.likes || 0));
+        else if (SETTINGS.feedSort === 'oldest') filtered.sort((a, b) => a.id - b.id);
+        else filtered.sort((a, b) => b.id - a.id);
         container.innerHTML = filtered.map(post => renderSinglePost(post)).join('');
     }
 
@@ -2596,19 +2599,6 @@ Learn, explore, and stay informed. <span class="post-tag">#CyberWatch</span> <sp
                 <button class="follow-btn" onclick="event.stopPropagation(); toggleFollow(this)">Follow</button>
             </div>
         `).join('');
-    }
-
-    function renderLiveNews() {
-        const container = document.getElementById('liveFeed');
-        container.innerHTML = LIVE_NEWS.map(n => {
-            const colors = { critical: 'var(--red)', high: 'var(--orange)', medium: 'var(--purple)', info: 'var(--accent)' };
-            return `
-                <div style="padding: 8px 0; border-bottom: 1px solid var(--border); font-size: 13px;">
-                    <div style="color: ${colors[n.severity]}; font-size: 11px; font-weight: 600; text-transform: uppercase;">${n.severity} &#xB7; ${n.time}</div>
-                    <div style="margin-top: 2px; color: var(--text-secondary);">${escapeHtml(n.text)}</div>
-                </div>
-            `;
-        }).join('');
     }
 
     // ═══ PAGE ROUTER & FEED CHROME ═══
@@ -2654,6 +2644,11 @@ Learn, explore, and stay informed. <span class="post-tag">#CyberWatch</span> <sp
         document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
         const navItem = document.querySelector(`[data-page="${page}"]`);
         if (navItem) navItem.classList.add('active');
+        // Update mobile nav active state
+        const mobileMap = { home: 0, explore: 1, notifications: 2, learn: 3 };
+        document.querySelectorAll('.mobile-nav-item').forEach((n, i) => {
+            n.classList.toggle('active', i === mobileMap[page]);
+        });
         currentProfile = null;
         currentPage = page;
         window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -2683,7 +2678,7 @@ Learn, explore, and stay informed. <span class="post-tag">#CyberWatch</span> <sp
     // ═══ EXPLORE ═══
     function showExplorePage() {
         setFeedChrome(false);
-        setPageTitle('Explore', true);
+        setPageTitle('Explore', 'home');
         const postsArea = document.getElementById('feedPosts');
 
         const categories = [
@@ -2740,7 +2735,7 @@ Learn, explore, and stay informed. <span class="post-tag">#CyberWatch</span> <sp
     // ═══ LEARN ═══
     function showLearnPage() {
         setFeedChrome(false);
-        setPageTitle('Learn', true);
+        setPageTitle('Learn', 'home');
 
         const postsArea = document.getElementById('feedPosts');
         const lessonKeys = Object.keys(LESSONS);
@@ -2784,7 +2779,7 @@ Learn, explore, and stay informed. <span class="post-tag">#CyberWatch</span> <sp
     // ═══ ALERTS ═══
     function showAlertsPage() {
         setFeedChrome(false);
-        setPageTitle('Alerts', true);
+        setPageTitle('Alerts', 'home');
         const postsArea = document.getElementById('feedPosts');
 
         const alerts = [
@@ -2845,7 +2840,7 @@ Learn, explore, and stay informed. <span class="post-tag">#CyberWatch</span> <sp
     // ═══ TOOLS ═══
     function showToolsPage() {
         setFeedChrome(false);
-        setPageTitle('Tools', true);
+        setPageTitle('Tools', 'home');
         const postsArea = document.getElementById('feedPosts');
 
         const toolCategories = [
@@ -2931,7 +2926,7 @@ Learn, explore, and stay informed. <span class="post-tag">#CyberWatch</span> <sp
     // ═══ BOOKMARKS ═══
     function showBookmarksPage() {
         setFeedChrome(false);
-        setPageTitle('Bookmarks', true);
+        setPageTitle('Bookmarks', 'home');
         const postsArea = document.getElementById('feedPosts');
 
         const saved = POSTS.filter(p => bookmarkedPosts.includes(p.id));
@@ -2990,11 +2985,9 @@ Learn, explore, and stay informed. <span class="post-tag">#CyberWatch</span> <sp
         const ticker = document.getElementById('tickerBar');
         if (ticker) ticker.style.display = SETTINGS.liveTicker ? '' : 'none';
 
-        // Font size
+        // Font size — CSS custom property so it applies to all posts including future ones
         const sizes = { small: '14px', medium: '15px', large: '17px' };
-        document.querySelectorAll('.post-content').forEach(el => {
-            el.style.fontSize = sizes[SETTINGS.fontSize] || sizes.medium;
-        });
+        document.documentElement.style.setProperty('--post-font-size', sizes[SETTINGS.fontSize] || sizes.medium);
     }
 
     function showSettingsPage() {
@@ -3311,7 +3304,7 @@ Learn, explore, and stay informed. <span class="post-tag">#CyberWatch</span> <sp
                 <div class="notif-icon ${n.iconClass}">${n.icon}</div>
                 <div class="notif-body">
                     <div class="notif-text">
-                        <strong>${escapeHtml(n.user)}</strong> ${n.text}
+                        <strong>${escapeHtml(n.user)}</strong> ${escapeHtml(n.text)}
                     </div>
                     ${n.preview ? `<div class="notif-preview">${escapeHtml(n.preview)}</div>` : ''}
                     <div class="notif-time">${n.time}</div>
@@ -4399,7 +4392,7 @@ Learn, explore, and stay informed. <span class="post-tag">#CyberWatch</span> <sp
         const container = document.getElementById('feedPosts');
         if (!container) return;
         const skeletons = Array(4).fill('<div class="post" style="pointer-events:none;"><div class="post-header"><div class="skeleton" style="width:40px;height:40px;border-radius:50%;"></div><div style="flex:1"><div class="skeleton" style="width:60%;height:14px;margin-bottom:8px;"></div><div class="skeleton" style="width:100%;height:12px;margin-bottom:4px;"></div><div class="skeleton" style="width:80%;height:12px;"></div></div></div></div>').join('');
-        container.innerHTML += skeletons;
+        container.innerHTML = skeletons;
     }
 
     async function fetchHackerNews() {
@@ -4424,7 +4417,7 @@ Learn, explore, and stay informed. <span class="post-tag">#CyberWatch</span> <sp
                     author: 'Hacker News', handle: '@hackernews', verified: true,
                     avatar: 'HN', avatarColor: 'linear-gradient(135deg, #ff6600, #ff9933)',
                     time: timeAgo, category: category,
-                    content: escapeHtml(story.title) + (story.url ? '\n\n<a href="' + escapeHtml(story.url) + '" target="_blank" rel="noopener">' + escapeHtml(new URL(story.url).hostname) + '</a>' : '') + '\n\n<span class="post-tag">#HackerNews</span> <span class="post-tag">#' + category + '</span>',
+                    content: escapeHtml(story.title) + (story.url ? '\n\n<a href="' + escapeHtml(story.url) + '" target="_blank" rel="noopener">' + safeHostname(story.url) + '</a>' : '') + '\n\n<span class="post-tag">#HackerNews</span> <span class="post-tag">#' + category + '</span>',
                     likes: story.score || 0, reposts: 0,
                     replies: story.descendants || 0, views: formatNum(story.score || 0)
                 });
@@ -4458,7 +4451,7 @@ Learn, explore, and stay informed. <span class="post-tag">#CyberWatch</span> <sp
                     const avatar = sub === 'netsec' ? 'NS' : 'RC';
                     const color = sub === 'netsec' ? 'linear-gradient(135deg, #2ed573, #00d4ff)' : 'linear-gradient(135deg, #a855f7, #ff6b9d)';
                     let text = escapeHtml(p.title);
-                    if (p.url && !p.is_self) text += '\n\n<a href="' + escapeHtml(p.url) + '" target="_blank" rel="noopener">' + escapeHtml(new URL(p.url).hostname) + '</a>';
+                    if (p.url && !p.is_self) text += '\n\n<a href="' + escapeHtml(p.url) + '" target="_blank" rel="noopener">' + safeHostname(p.url) + '</a>';
                     if (p.selftext) text += '\n\n' + escapeHtml(p.selftext.substring(0, 200)) + (p.selftext.length > 200 ? '...' : '');
                     text += '\n\n<span class="post-tag">#Reddit</span> <span class="post-tag">#' + sub + '</span>';
                     POSTS.push({
@@ -4478,7 +4471,7 @@ Learn, explore, and stay informed. <span class="post-tag">#CyberWatch</span> <sp
         try {
             const now = new Date();
             const weekAgo = new Date(now - 7 * 24 * 60 * 60 * 1000);
-            const fmt = d => d.toISOString().replace(/\.\d+Z/, '.000');
+            const fmt = d => d.toISOString().slice(0, 19) + '.000';
             const url = 'https://services.nvd.nist.gov/rest/json/cves/2.0?pubStartDate=' + fmt(weekAgo) + '&pubEndDate=' + fmt(now) + '&resultsPerPage=20';
             const res = await fetch(url);
             const data = await res.json();
@@ -4496,9 +4489,11 @@ Learn, explore, and stay informed. <span class="post-tag">#CyberWatch</span> <sp
                     TICKER_EVENTS.push({ severity: cve.severity === 'critical' ? 'var(--red)' : cve.severity === 'high' ? 'var(--orange)' : 'var(--accent)', text: cve.id + ' (CVSS ' + cve.cvss + ') — ' + cve.desc.substring(0, 100) + '...' });
                 });
                 cves.filter(c => c.cvss >= 7).slice(0, 5).forEach(cve => {
+                    const cveNumId = 200000 + parseInt(cve.id.replace(/[^0-9]/g, '').slice(-6));
+                    if (POSTS.find(p => p.id === cveNumId)) return;
                     const sevClass = cve.severity === 'critical' ? 'severity-critical' : 'severity-high';
                     POSTS.splice(1, 0, {
-                        id: 200000 + Math.random() * 100000 | 0,
+                        id: cveNumId,
                         author: 'NVD / NIST', handle: '@nvd_nist', verified: true,
                         avatar: 'NVD', avatarColor: 'linear-gradient(135deg, #ff4757, #ff6b9d)',
                         time: 'today', category: 'cyber', severity: cve.severity,
@@ -4546,6 +4541,10 @@ Learn, explore, and stay informed. <span class="post-tag">#CyberWatch</span> <sp
             category: cats[i % cats.length], topic: '#' + word, count: formatNum(score * 50) + ' posts'
         }));
         renderTrending();
+    }
+
+    function safeHostname(url) {
+        try { return escapeHtml(new URL(url).hostname); } catch { return escapeHtml(url); }
     }
 
     function categorizeStory(title) {
@@ -4598,7 +4597,6 @@ Learn, explore, and stay informed. <span class="post-tag">#CyberWatch</span> <sp
         renderPosts();
         renderTrending();
         renderFollows();
-        renderLiveNews();
         updateStatCards();
         renderTicker();
         updateXPDisplay();
