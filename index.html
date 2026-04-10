@@ -2089,14 +2089,19 @@
                     <input class="auth-input" id="signInPass" type="password" placeholder="Enter your password" autocomplete="current-password" onkeydown="if(event.key==='Enter')doSignIn()">
                 </div>
                 <button class="auth-btn" onclick="doSignIn()">Sign In</button>
-                <div class="auth-switch">Don't have an account? <a onclick="showSignUp()">Sign up</a></div>
+                <div class="auth-switch">Have an invite? <a onclick="showSignUp()">Sign up</a></div>
             </div>
 
             <!-- Sign Up Form -->
             <div id="signUpForm" style="display:none;">
                 <div class="auth-title">Join CyberWatch</div>
-                <div class="auth-subtitle">Create your account to access live threat intel</div>
+                <div class="auth-subtitle">CyberWatch is invite-only. Enter your invite code to join.</div>
                 <div class="auth-error" id="signUpError"></div>
+                <div class="auth-field">
+                    <label class="auth-label">Invite Code</label>
+                    <input class="auth-input" id="signUpInvite" type="text" placeholder="Enter your invite code" style="font-family: 'SF Mono', 'Fira Code', monospace; letter-spacing: 2px; text-transform: uppercase;">
+                </div>
+                <div class="auth-divider">invited by ArukuX</div>
                 <div class="auth-field">
                     <label class="auth-label">Display Name</label>
                     <input class="auth-input" id="signUpName" type="text" placeholder="How others will see you" autocomplete="name">
@@ -4862,13 +4867,40 @@ Learn, explore, and stay informed. <span class="post-tag">#CyberWatch</span> <sp
         el.classList.add('visible');
     }
 
+    // ─── INVITE CODES ───
+    // Add codes here to invite people. Share link: https://ccguvycu.github.io/cyberwatch/#invite=CODE
+    const VALID_INVITE_CODES = new Set([
+        'CYBERWATCH2026',
+        'ARUKUX-VIP',
+        'NETSEC-ELITE',
+        'HACKTHEPLANET',
+        'WATCHGUARD-01',
+        'SENTINEL-PASS',
+        'ZERO-DAY-ACCESS',
+        'THREAT-HUNTER',
+        'RED-TEAM-GO',
+        'BLUE-TEAM-IN'
+    ]);
+
+    const usedInviteCodes = new Set(JSON.parse(localStorage.getItem('cw_used_invites') || '[]'));
+
     function doSignUp() {
+        const inviteCode = document.getElementById('signUpInvite').value.trim().toUpperCase();
         const name = document.getElementById('signUpName').value.trim();
         const username = document.getElementById('signUpUser').value.trim().toLowerCase();
         const email = document.getElementById('signUpEmail').value.trim();
         const pass = document.getElementById('signUpPass').value;
         const passConfirm = document.getElementById('signUpPassConfirm').value;
 
+        if (!inviteCode) {
+            return showAuthError('signUpError', 'Invite code is required. CyberWatch is invite-only.');
+        }
+        if (!VALID_INVITE_CODES.has(inviteCode)) {
+            return showAuthError('signUpError', 'Invalid invite code. Contact ArukuX for access.');
+        }
+        if (usedInviteCodes.has(inviteCode)) {
+            return showAuthError('signUpError', 'This invite code has already been used.');
+        }
         if (!name || !username || !email || !pass) {
             return showAuthError('signUpError', 'All fields are required.');
         }
@@ -4903,6 +4935,10 @@ Learn, explore, and stay informed. <span class="post-tag">#CyberWatch</span> <sp
             createdAt: Date.now()
         };
         saveUsers(users);
+
+        // Mark invite code as used
+        usedInviteCodes.add(inviteCode);
+        localStorage.setItem('cw_used_invites', JSON.stringify([...usedInviteCodes]));
 
         // Auto sign in
         const session = { username: username, name: name, loggedInAt: Date.now() };
@@ -5042,6 +5078,17 @@ Learn, explore, and stay informed. <span class="post-tag">#CyberWatch</span> <sp
 
     // ═══ INIT ═══
     document.addEventListener('DOMContentLoaded', () => {
+        // Check for invite link in URL hash
+        const hash = window.location.hash;
+        if (hash.includes('invite=')) {
+            const code = hash.split('invite=')[1]?.split('&')[0];
+            if (code) {
+                showSignUp();
+                const inviteInput = document.getElementById('signUpInvite');
+                if (inviteInput) inviteInput.value = decodeURIComponent(code);
+            }
+        }
+
         // Check for existing session
         const session = getSession();
         if (session) {
