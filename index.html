@@ -1895,81 +1895,7 @@
             margin: 2px;
         }
 
-        /* ─── INSTALL BANNER ─── */
-        .install-banner {
-            position: fixed;
-            bottom: 80px;
-            left: 50%;
-            transform: translateX(-50%);
-            background: var(--bg-card);
-            border: 1px solid var(--border);
-            border-radius: 16px;
-            padding: 16px 20px;
-            display: flex;
-            align-items: center;
-            gap: 14px;
-            z-index: 5000;
-            box-shadow: 0 12px 40px rgba(0,0,0,0.6), 0 0 30px rgba(0,212,255,0.1);
-            max-width: 380px;
-            width: calc(100% - 32px);
-            animation: install-slide-up 0.4s ease-out;
-        }
-
-        .install-banner.hidden { display: none; }
-
-        @keyframes install-slide-up {
-            from { opacity: 0; transform: translateX(-50%) translateY(30px); }
-            to { opacity: 1; transform: translateX(-50%) translateY(0); }
-        }
-
-        .install-banner-icon {
-            width: 44px;
-            height: 44px;
-            background: linear-gradient(135deg, var(--accent), var(--purple));
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 20px;
-            font-weight: 900;
-            color: #000;
-            flex-shrink: 0;
-        }
-
-        .install-banner-text { flex: 1; }
-        .install-banner-title { font-size: 14px; font-weight: 700; }
-        .install-banner-desc { font-size: 12px; color: var(--text-muted); margin-top: 2px; }
-
-        .install-banner-actions { display: flex; gap: 8px; flex-shrink: 0; }
-
-        .install-btn {
-            padding: 8px 16px;
-            border-radius: 10px;
-            font-weight: 700;
-            font-size: 13px;
-            cursor: pointer;
-            border: none;
-            transition: all 0.2s;
-        }
-
-        .install-btn-yes {
-            background: var(--accent);
-            color: #000;
-        }
-
-        .install-btn-yes:hover { box-shadow: 0 2px 10px rgba(0,212,255,0.3); }
-
-        .install-btn-no {
-            background: transparent;
-            color: var(--text-muted);
-            border: 1px solid var(--border);
-        }
-
-        .install-btn-no:hover { border-color: var(--text-secondary); color: var(--text-secondary); }
-
-        @media (max-width: 768px) {
-            .install-banner { bottom: 70px; }
-        }
+        /* (Install screen reuses auth-screen styles) */
 
         /* ─── AUTH SCREEN ─── */
         .auth-screen {
@@ -2144,16 +2070,30 @@
     </style>
 </head>
 <body>
-    <!-- ═══ INSTALL BANNER ═══ -->
-    <div class="install-banner hidden" id="installBanner">
-        <div class="install-banner-icon">CW</div>
-        <div class="install-banner-text">
-            <div class="install-banner-title">Install CyberWatch</div>
-            <div class="install-banner-desc">Add to home screen for a native app experience</div>
-        </div>
-        <div class="install-banner-actions">
-            <button class="install-btn install-btn-yes" onclick="doInstall()">Install</button>
-            <button class="install-btn install-btn-no" onclick="dismissInstall()">Later</button>
+    <!-- ═══ INSTALL SCREEN ═══ -->
+    <div class="auth-screen hidden" id="installScreen" style="z-index: 10000;">
+        <div class="auth-card" style="text-align: center;">
+            <div class="auth-logo">
+                <div class="auth-logo-icon">CW</div>
+                <span class="auth-logo-text">CyberWatch</span>
+            </div>
+            <div style="font-size: 48px; margin-bottom: 16px;">&#x1F4F2;</div>
+            <div class="auth-title">Install the App</div>
+            <div class="auth-subtitle" style="margin-bottom: 20px;">Get CyberWatch on your home screen for instant access — works like a native app, no app store needed.</div>
+            <div style="background: var(--bg-secondary); border: 1px solid var(--border); border-radius: 12px; padding: 14px; margin-bottom: 20px; text-align: left;">
+                <div style="font-size: 13px; font-weight: 600; color: var(--text-primary); margin-bottom: 8px;">What you get:</div>
+                <div style="font-size: 12px; color: var(--text-secondary); line-height: 1.8;">
+                    &#x2705; Full-screen app — no browser bars<br>
+                    &#x2705; Home screen icon with CW logo<br>
+                    &#x2705; One tap to open, instant load<br>
+                    &#x2705; Works offline for cached content<br>
+                    &#x2705; Push notification ready
+                </div>
+            </div>
+            <button class="auth-btn" onclick="doInstall()" id="installBtn">Install CyberWatch</button>
+            <div style="margin-top: 12px;">
+                <a onclick="dismissInstall()" style="color: var(--text-muted); font-size: 13px; cursor: pointer;">Skip for now</a>
+            </div>
         </div>
     </div>
 
@@ -4940,14 +4880,20 @@ Learn, explore, and stay informed. <span class="post-tag">#CyberWatch</span> <sp
         }
     });
 
-    function showInstallBanner() {
-        const banner = document.getElementById('installBanner');
-        if (banner) banner.classList.remove('hidden');
+    function showInstallScreen() {
+        const screen = document.getElementById('installScreen');
+        if (screen) screen.classList.remove('hidden');
+
+        // Update button text for iOS
+        const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
+        if (isIOS && !deferredInstallPrompt) {
+            const btn = document.getElementById('installBtn');
+            if (btn) btn.textContent = 'How to Install';
+        }
     }
 
     function doInstall() {
-        const banner = document.getElementById('installBanner');
-        if (banner) banner.classList.add('hidden');
+        const screen = document.getElementById('installScreen');
 
         if (deferredInstallPrompt) {
             deferredInstallPrompt.prompt();
@@ -4956,28 +4902,26 @@ Learn, explore, and stay informed. <span class="post-tag">#CyberWatch</span> <sp
                     localStorage.setItem('cw_install_dismissed', 'installed');
                 }
                 deferredInstallPrompt = null;
+                if (screen) screen.classList.add('hidden');
             });
         } else {
-            // Fallback for iOS / browsers that don't support beforeinstallprompt
-            alert('To install: tap the Share button in your browser, then "Add to Home Screen"');
+            // iOS / browsers without beforeinstallprompt — show manual steps
+            const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
+            if (isIOS) {
+                alert('1. Tap the Share button (square with arrow)\n2. Scroll down and tap "Add to Home Screen"\n3. Tap "Add"\n\nCyberWatch will appear on your home screen!');
+            } else {
+                alert('Open your browser menu (three dots) and tap "Add to Home Screen" or "Install App"');
+            }
             localStorage.setItem('cw_install_dismissed', 'manual');
+            if (screen) screen.classList.add('hidden');
         }
     }
 
     function dismissInstall() {
-        const banner = document.getElementById('installBanner');
-        if (banner) banner.classList.add('hidden');
+        const screen = document.getElementById('installScreen');
+        if (screen) screen.classList.add('hidden');
         localStorage.setItem('cw_install_dismissed', Date.now().toString());
     }
-
-    // Also show for iOS users who can't get beforeinstallprompt
-    window.addEventListener('load', () => {
-        const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
-        const isStandalone = window.matchMedia('(display-mode: standalone)').matches || navigator.standalone;
-        if (isIOS && !isStandalone && !localStorage.getItem('cw_install_dismissed')) {
-            setTimeout(showInstallBanner, 5000);
-        }
-    });
 
     // ═══ AUTH SYSTEM ═══
 
@@ -5207,6 +5151,12 @@ Learn, explore, and stay informed. <span class="post-tag">#CyberWatch</span> <sp
         window.CW_HANDLE = handle;
 
         initApp();
+
+        // Show install screen on first login (not already installed/dismissed)
+        const isStandalone = window.matchMedia('(display-mode: standalone)').matches || navigator.standalone;
+        if (!isStandalone && !localStorage.getItem('cw_install_dismissed')) {
+            setTimeout(showInstallScreen, 1000);
+        }
     }
 
     function doLogout() {
