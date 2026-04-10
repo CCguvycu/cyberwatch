@@ -950,22 +950,116 @@
 
             /* XP toast — above mobile nav */
             .xp-toast { bottom: 70px; font-size: 13px; padding: 8px 18px; }
+
+            /* Page container padding override — inline 24px is too wide on mobile */
+            [style*="padding: 24px"] { padding: 14px 16px !important; }
+
+            /* Post detail view */
+            [style*="padding: 18px 24px"] { padding: 14px 16px !important; }
+
+            /* Explore page cards */
+            .post[style*="border-radius: 16px"] { padding: 12px 14px !important; }
+
+            /* Settings info box */
+            .settings-info { padding: 10px; }
+            .settings-info-row { font-size: 12px; }
+
+            /* Auth card on mobile */
+            .auth-card { padding: 20px 16px; max-width: 100%; }
+            .auth-logo-icon { width: 40px; height: 40px; font-size: 18px; }
+            .auth-logo-text { font-size: 20px; }
+            .auth-title { font-size: 18px; }
+            .auth-input { padding: 10px 14px; font-size: 13px; }
+            .auth-btn { padding: 12px; font-size: 14px; }
+
+            /* Category pills smaller */
+            .category-pill { font-size: 11px; padding: 2px 8px; }
+
+            /* Trending tighter */
+            .trending-item { padding: 10px 0; }
+            .trending-topic { font-size: 13px; }
+            .trending-count { font-size: 11px; }
+
+            /* Follow cards */
+            .follow-card { padding: 10px 0; gap: 10px; }
+            .follow-btn { padding: 5px 12px; font-size: 12px; }
+
+            /* Threat level widget */
+            .threat-level { padding: 10px; }
+            .threat-icon { font-size: 22px; }
+            .threat-label { font-size: 13px; }
+            .threat-desc { font-size: 11px; }
+
+            /* Stats bar */
+            .stats-bar { gap: 6px; }
+            .stat-card { padding: 8px; }
+            .stat-value { font-size: 15px; }
+            .stat-label { font-size: 10px; }
+
+            /* Lesson modal */
+            .lesson-nav button { padding: 8px; font-size: 13px; }
+            .lesson-category { font-size: 12px; }
+            .lesson-content h3 { font-size: 15px; }
+            .lesson-content ul, .lesson-content ol { padding-left: 16px; }
+            .lesson-content code { font-size: 12px; padding: 1px 6px; }
+
+            /* CTF page */
+            .ctf-difficulty { font-size: 10px; }
+            .ctf-submit { padding: 8px 16px; font-size: 12px; }
+
+            /* Comment system */
+            .comment { padding: 12px 16px 12px 16px; }
+            .reply-box { padding: 10px 16px; }
+            .reply-input { padding: 8px 12px; font-size: 13px; }
+            .reply-submit { padding: 6px 14px; font-size: 12px; }
+            .comment-count-label { padding: 10px 16px; font-size: 13px; }
+
+            /* Back button in header */
+            .feed-title div[style*="gap: 10px"] { gap: 8px !important; }
+
+            /* Profile follow button */
+            .profile-follow-btn { padding: 6px 16px; font-size: 13px; }
+            .profile-actions { top: 8px; right: 16px; }
+            .profile-meta-row { font-size: 12px; gap: 10px; }
+            .profile-badge { font-size: 10px; padding: 2px 6px; }
+
+            /* Widget on mobile */
+            .widget { padding: 12px; }
+            .widget-title { font-size: 14px; margin-bottom: 10px; }
+
+            /* XP widget */
+            .xp-widget { padding: 12px; }
+            .xp-level { font-size: 12px; }
+
+            /* Search box */
+            .search-box { padding: 8px 14px; }
         }
 
         /* Extra small phones */
         @media (max-width: 380px) {
-            .post { padding: 12px; }
-            .feed-title { padding: 12px 12px 0; font-size: 17px; }
-            .filter-bar { padding: 8px 12px; }
-            .filter-chip { padding: 5px 10px; font-size: 11px; }
+            .post { padding: 10px 12px; }
+            .feed-title { padding: 10px 12px 0; font-size: 16px; }
+            .filter-bar { padding: 8px 12px; gap: 6px; }
+            .filter-chip { padding: 4px 10px; font-size: 10px; }
             .compose-area { padding: 10px 12px; }
-            .shorts-row { padding: 10px 12px; }
-            .short-card { min-width: 110px; max-width: 110px; height: 170px; }
-            .avatar { width: 32px; height: 32px; font-size: 12px; }
-            .compose-toolbar { margin-left: 42px; }
+            .compose-input { font-size: 14px; }
+            .shorts-row { padding: 10px 12px; gap: 8px; }
+            .short-card { min-width: 100px; max-width: 100px; height: 155px; }
+            .short-card-label { font-size: 11px; }
+            .avatar { width: 30px; height: 30px; font-size: 11px; }
+            .compose-toolbar { margin-left: 40px; }
             .notif-item { padding: 10px 12px; }
-            .settings-section { padding: 12px; }
-            .modal { padding: 14px; }
+            .notif-icon { width: 30px; height: 30px; font-size: 14px; }
+            .notif-text { font-size: 12px; }
+            .settings-section { padding: 10px 12px; }
+            .modal { padding: 12px; }
+            .post-author { font-size: 13px; }
+            .post-content { font-size: 13px; }
+            .post-action-icon { font-size: 13px; }
+            [style*="padding: 24px"] { padding: 10px 12px !important; }
+            .auth-card { padding: 16px 12px; }
+            .ticker-bar { height: 26px; margin-top: 4px; }
+            .ticker-item { font-size: 10px; }
         }
 
         /* ─── MOBILE BOTTOM NAV ─── */
