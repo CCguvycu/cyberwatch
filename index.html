@@ -10,6 +10,7 @@
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
     <meta http-equiv="Pragma" content="no-cache">
     <title>CyberWatch | Homeland Security & Cyber Intelligence Hub</title>
+    <link rel="manifest" href="manifest.json">
     <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%23000'/><text y='70' x='12' font-size='60' font-weight='900' fill='%2300d4ff'>CW</text></svg>">
     <style>
         /* ═══════════════════════════════════════════════════════════════
@@ -1894,6 +1895,82 @@
             margin: 2px;
         }
 
+        /* ─── INSTALL BANNER ─── */
+        .install-banner {
+            position: fixed;
+            bottom: 80px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 16px 20px;
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            z-index: 5000;
+            box-shadow: 0 12px 40px rgba(0,0,0,0.6), 0 0 30px rgba(0,212,255,0.1);
+            max-width: 380px;
+            width: calc(100% - 32px);
+            animation: install-slide-up 0.4s ease-out;
+        }
+
+        .install-banner.hidden { display: none; }
+
+        @keyframes install-slide-up {
+            from { opacity: 0; transform: translateX(-50%) translateY(30px); }
+            to { opacity: 1; transform: translateX(-50%) translateY(0); }
+        }
+
+        .install-banner-icon {
+            width: 44px;
+            height: 44px;
+            background: linear-gradient(135deg, var(--accent), var(--purple));
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            font-weight: 900;
+            color: #000;
+            flex-shrink: 0;
+        }
+
+        .install-banner-text { flex: 1; }
+        .install-banner-title { font-size: 14px; font-weight: 700; }
+        .install-banner-desc { font-size: 12px; color: var(--text-muted); margin-top: 2px; }
+
+        .install-banner-actions { display: flex; gap: 8px; flex-shrink: 0; }
+
+        .install-btn {
+            padding: 8px 16px;
+            border-radius: 10px;
+            font-weight: 700;
+            font-size: 13px;
+            cursor: pointer;
+            border: none;
+            transition: all 0.2s;
+        }
+
+        .install-btn-yes {
+            background: var(--accent);
+            color: #000;
+        }
+
+        .install-btn-yes:hover { box-shadow: 0 2px 10px rgba(0,212,255,0.3); }
+
+        .install-btn-no {
+            background: transparent;
+            color: var(--text-muted);
+            border: 1px solid var(--border);
+        }
+
+        .install-btn-no:hover { border-color: var(--text-secondary); color: var(--text-secondary); }
+
+        @media (max-width: 768px) {
+            .install-banner { bottom: 70px; }
+        }
+
         /* ─── AUTH SCREEN ─── */
         .auth-screen {
             position: fixed;
@@ -2067,6 +2144,19 @@
     </style>
 </head>
 <body>
+    <!-- ═══ INSTALL BANNER ═══ -->
+    <div class="install-banner hidden" id="installBanner">
+        <div class="install-banner-icon">CW</div>
+        <div class="install-banner-text">
+            <div class="install-banner-title">Install CyberWatch</div>
+            <div class="install-banner-desc">Add to home screen for a native app experience</div>
+        </div>
+        <div class="install-banner-actions">
+            <button class="install-btn install-btn-yes" onclick="doInstall()">Install</button>
+            <button class="install-btn install-btn-no" onclick="dismissInstall()">Later</button>
+        </div>
+    </div>
+
     <!-- ═══ AUTH SCREEN ═══ -->
     <div class="auth-screen" id="authScreen">
         <div class="auth-card">
@@ -4830,6 +4920,64 @@ Learn, explore, and stay informed. <span class="post-tag">#CyberWatch</span> <sp
     PROFILES['@nvd_nist'] = { name: 'NVD / NIST', handle: '@nvd_nist', verified: true, avatar: 'NVD', avatarColor: 'linear-gradient(135deg, #ff4757, #ff6b9d)', bannerColor: 'linear-gradient(135deg, #1a0000, #330000, #1a0000)', bio: 'National Vulnerability Database real-time CVE data from NIST.', location: 'Gaithersburg, MD', link: 'nvd.nist.gov', joined: 'October 2000', following: 0, followers: 2000000, badges: ['gov', 'verified'], category: 'cyber' };
     PROFILES['@r_netsec'] = { name: 'r/netsec', handle: '@r_netsec', verified: true, avatar: 'NS', avatarColor: 'linear-gradient(135deg, #2ed573, #00d4ff)', bannerColor: 'linear-gradient(135deg, #001a0a, #002a1a, #001a0a)', bio: 'Information Security News and Discussion from Reddit.', location: 'Reddit', link: 'reddit.com/r/netsec', joined: 'January 2008', following: 0, followers: 800000, badges: ['verified'], category: 'cyber' };
     PROFILES['@r_cybersecurity'] = { name: 'r/cybersecurity', handle: '@r_cybersecurity', verified: true, avatar: 'RC', avatarColor: 'linear-gradient(135deg, #a855f7, #ff6b9d)', bannerColor: 'linear-gradient(135deg, #0a001a, #1a0030, #0a001a)', bio: 'Cybersecurity career advice, news, and discussion from Reddit.', location: 'Reddit', link: 'reddit.com/r/cybersecurity', joined: 'March 2011', following: 0, followers: 1200000, badges: ['verified'], category: 'cyber' };
+
+    // ═══ PWA INSTALL ═══
+
+    let deferredInstallPrompt = null;
+
+    // Register service worker
+    if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('sw.js').catch(() => {});
+    }
+
+    // Capture the browser's install prompt
+    window.addEventListener('beforeinstallprompt', (e) => {
+        e.preventDefault();
+        deferredInstallPrompt = e;
+        // Show banner after a short delay (only if not dismissed before)
+        if (!localStorage.getItem('cw_install_dismissed')) {
+            setTimeout(showInstallBanner, 3000);
+        }
+    });
+
+    function showInstallBanner() {
+        const banner = document.getElementById('installBanner');
+        if (banner) banner.classList.remove('hidden');
+    }
+
+    function doInstall() {
+        const banner = document.getElementById('installBanner');
+        if (banner) banner.classList.add('hidden');
+
+        if (deferredInstallPrompt) {
+            deferredInstallPrompt.prompt();
+            deferredInstallPrompt.userChoice.then(result => {
+                if (result.outcome === 'accepted') {
+                    localStorage.setItem('cw_install_dismissed', 'installed');
+                }
+                deferredInstallPrompt = null;
+            });
+        } else {
+            // Fallback for iOS / browsers that don't support beforeinstallprompt
+            alert('To install: tap the Share button in your browser, then "Add to Home Screen"');
+            localStorage.setItem('cw_install_dismissed', 'manual');
+        }
+    }
+
+    function dismissInstall() {
+        const banner = document.getElementById('installBanner');
+        if (banner) banner.classList.add('hidden');
+        localStorage.setItem('cw_install_dismissed', Date.now().toString());
+    }
+
+    // Also show for iOS users who can't get beforeinstallprompt
+    window.addEventListener('load', () => {
+        const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
+        const isStandalone = window.matchMedia('(display-mode: standalone)').matches || navigator.standalone;
+        if (isIOS && !isStandalone && !localStorage.getItem('cw_install_dismissed')) {
+            setTimeout(showInstallBanner, 5000);
+        }
+    });
 
     // ═══ AUTH SYSTEM ═══
 
