@@ -5153,9 +5153,10 @@ Learn, explore, and stay informed. <span class="post-tag">#CyberWatch</span> <sp
 
         initApp();
 
-        // Show install screen if not running as installed app
+        // Show install screen if not running as installed app or APK
         const isStandalone = window.matchMedia('(display-mode: standalone)').matches || navigator.standalone;
-        if (!isStandalone) {
+        const isAPK = navigator.userAgent.includes('CyberWatchApp');
+        if (!isStandalone && !isAPK) {
             setTimeout(showInstallScreen, 1000);
         }
     }
