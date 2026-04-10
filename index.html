@@ -4867,24 +4867,29 @@ Learn, explore, and stay informed. <span class="post-tag">#CyberWatch</span> <sp
         el.classList.add('visible');
     }
 
-    // ─── INVITE CODES ───
-    // Add codes here to invite people. Share link: https://ccguvycu.github.io/cyberwatch/#invite=CODE
-    const VALID_INVITE_CODES = new Set([
-        'CYBERWATCH2026',
-        'ARUKUX-VIP',
-        'NETSEC-ELITE',
-        'HACKTHEPLANET',
-        'WATCHGUARD-01',
-        'SENTINEL-PASS',
-        'ZERO-DAY-ACCESS',
-        'THREAT-HUNTER',
-        'RED-TEAM-GO',
-        'BLUE-TEAM-IN'
+    // ─── INVITE CODES (SHA-256 hashed — codes not visible in source) ───
+    const INVITE_HASHES = new Set([
+        'cb61d104cdf29002921afa82b2d5292421aea6dd77e4f53dbf5adcc2ab465109',
+        '5cf17813ad3f77e1d8f4506732c8e2b510d0928e1f3c19198020823b4b8940ce',
+        'c5a2612a613511a0b2b618f0cd2b7a52ad5250b6864a85fc4d9d7d2752703e54',
+        '6d1c3c6f9352722a81b343e6e6a95b87e87425157e9d059bd12bf13efa2dc5d9',
+        'e7977b4f17b85034dbcbdc670a1e3e8d72c46a2de0d30019e2ace67903caff7f',
+        '18e887ea0795685411d25745232c6d93c2fa2c347d68783bcce57d032e0c596e',
+        '164f2528fa8b2347d68b13a5e5f4cac3b837a14cfa9225c7bcb8e2fe1bb9532d',
+        '979a46b01bdc38e6128ed648269484a14606d8a4e66189316603ddd210f54580',
+        '3947bf7923435c617471a85316215c35e1980e339ed3bd478b409696d7c86256',
+        '516c3e6ecb7b07eceb8fa9d7925e3e855c4b9843fd607540e097d0e76152ca6f'
     ]);
 
-    const usedInviteCodes = new Set(JSON.parse(localStorage.getItem('cw_used_invites') || '[]'));
+    const usedInviteHashes = new Set(JSON.parse(localStorage.getItem('cw_used_invites') || '[]'));
 
-    function doSignUp() {
+    async function hashCode(code) {
+        const data = new TextEncoder().encode(code);
+        const hashBuffer = await crypto.subtle.digest('SHA-256', data);
+        return Array.from(new Uint8Array(hashBuffer)).map(b => b.toString(16).padStart(2, '0')).join('');
+    }
+
+    async function doSignUp() {
         const inviteCode = document.getElementById('signUpInvite').value.trim().toUpperCase();
         const name = document.getElementById('signUpName').value.trim();
         const username = document.getElementById('signUpUser').value.trim().toLowerCase();
@@ -4895,10 +4900,13 @@ Learn, explore, and stay informed. <span class="post-tag">#CyberWatch</span> <sp
         if (!inviteCode) {
             return showAuthError('signUpError', 'Invite code is required. CyberWatch is invite-only.');
         }
-        if (!VALID_INVITE_CODES.has(inviteCode)) {
+
+        const codeHash = await hashCode(inviteCode);
+
+        if (!INVITE_HASHES.has(codeHash)) {
             return showAuthError('signUpError', 'Invalid invite code. Contact ArukuX for access.');
         }
-        if (usedInviteCodes.has(inviteCode)) {
+        if (usedInviteHashes.has(codeHash)) {
             return showAuthError('signUpError', 'This invite code has already been used.');
         }
         if (!name || !username || !email || !pass) {
@@ -4936,9 +4944,9 @@ Learn, explore, and stay informed. <span class="post-tag">#CyberWatch</span> <sp
         };
         saveUsers(users);
 
-        // Mark invite code as used
-        usedInviteCodes.add(inviteCode);
-        localStorage.setItem('cw_used_invites', JSON.stringify([...usedInviteCodes]));
+        // Mark invite code hash as used
+        usedInviteHashes.add(codeHash);
+        localStorage.setItem('cw_used_invites', JSON.stringify([...usedInviteHashes]));
 
         // Auto sign in
         const session = { username: username, name: name, loggedInAt: Date.now() };
