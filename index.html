@@ -1894,6 +1894,170 @@
             margin: 2px;
         }
 
+        /* ─── AUTH SCREEN ─── */
+        .auth-screen {
+            position: fixed;
+            inset: 0;
+            background: var(--bg-primary);
+            z-index: 9999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .auth-screen.hidden { display: none; }
+
+        .auth-card {
+            width: 100%;
+            max-width: 400px;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 32px;
+            box-shadow: 0 25px 60px rgba(0,0,0,0.5), 0 0 40px rgba(0,212,255,0.08);
+        }
+
+        .auth-logo {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            margin-bottom: 28px;
+        }
+
+        .auth-logo-icon {
+            width: 48px;
+            height: 48px;
+            background: linear-gradient(135deg, var(--accent), var(--purple));
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 22px;
+            font-weight: 900;
+            color: #000;
+            box-shadow: 0 0 25px rgba(0, 212, 255, 0.3);
+        }
+
+        .auth-logo-text {
+            font-size: 26px;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--accent), var(--purple));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .auth-title {
+            font-size: 20px;
+            font-weight: 700;
+            text-align: center;
+            margin-bottom: 6px;
+        }
+
+        .auth-subtitle {
+            font-size: 13px;
+            color: var(--text-muted);
+            text-align: center;
+            margin-bottom: 24px;
+        }
+
+        .auth-field {
+            margin-bottom: 14px;
+        }
+
+        .auth-label {
+            display: block;
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text-secondary);
+            margin-bottom: 6px;
+        }
+
+        .auth-input {
+            width: 100%;
+            padding: 12px 16px;
+            background: var(--bg-input);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            color: var(--text-primary);
+            font-size: 14px;
+            font-family: inherit;
+            outline: none;
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+
+        .auth-input:focus { border-color: var(--accent); box-shadow: 0 0 12px rgba(0,212,255,0.12); }
+        .auth-input::placeholder { color: var(--text-muted); }
+
+        .auth-btn {
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(135deg, var(--accent), var(--purple));
+            color: #000;
+            font-weight: 800;
+            font-size: 15px;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            margin-top: 8px;
+            transition: all 0.25s ease;
+            box-shadow: 0 4px 15px rgba(0, 212, 255, 0.2);
+        }
+
+        .auth-btn:hover { transform: translateY(-1px); box-shadow: 0 6px 25px rgba(0,212,255,0.35); }
+        .auth-btn:disabled { opacity: 0.4; cursor: not-allowed; transform: none; box-shadow: none; }
+
+        .auth-switch {
+            text-align: center;
+            margin-top: 18px;
+            font-size: 13px;
+            color: var(--text-muted);
+        }
+
+        .auth-switch a {
+            color: var(--accent);
+            cursor: pointer;
+            font-weight: 600;
+            text-decoration: none;
+        }
+
+        .auth-switch a:hover { text-decoration: underline; }
+
+        .auth-error {
+            background: var(--red-dim);
+            color: var(--red);
+            border: 1px solid rgba(255,71,87,0.3);
+            border-radius: 10px;
+            padding: 10px 14px;
+            font-size: 13px;
+            margin-bottom: 14px;
+            display: none;
+        }
+
+        .auth-error.visible { display: block; }
+
+        .auth-divider {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin: 18px 0;
+            color: var(--text-muted);
+            font-size: 12px;
+        }
+
+        .auth-divider::before, .auth-divider::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: var(--border);
+        }
+
+        @media (max-width: 768px) {
+            .auth-card { padding: 24px 20px; border-radius: 16px; }
+            .auth-logo-text { font-size: 22px; }
+        }
+
         /* Code block syntax colors */
         .kw { color: var(--purple); }
         .fn { color: var(--accent); }
@@ -1903,7 +2067,63 @@
     </style>
 </head>
 <body>
-    <div class="app">
+    <!-- ═══ AUTH SCREEN ═══ -->
+    <div class="auth-screen" id="authScreen">
+        <div class="auth-card">
+            <div class="auth-logo">
+                <div class="auth-logo-icon">CW</div>
+                <span class="auth-logo-text">CyberWatch</span>
+            </div>
+
+            <!-- Sign In Form -->
+            <div id="signInForm">
+                <div class="auth-title">Welcome back</div>
+                <div class="auth-subtitle">Sign in to your CyberWatch account</div>
+                <div class="auth-error" id="signInError"></div>
+                <div class="auth-field">
+                    <label class="auth-label">Username</label>
+                    <input class="auth-input" id="signInUser" type="text" placeholder="Enter your username" autocomplete="username">
+                </div>
+                <div class="auth-field">
+                    <label class="auth-label">Password</label>
+                    <input class="auth-input" id="signInPass" type="password" placeholder="Enter your password" autocomplete="current-password" onkeydown="if(event.key==='Enter')doSignIn()">
+                </div>
+                <button class="auth-btn" onclick="doSignIn()">Sign In</button>
+                <div class="auth-switch">Don't have an account? <a onclick="showSignUp()">Sign up</a></div>
+            </div>
+
+            <!-- Sign Up Form -->
+            <div id="signUpForm" style="display:none;">
+                <div class="auth-title">Join CyberWatch</div>
+                <div class="auth-subtitle">Create your account to access live threat intel</div>
+                <div class="auth-error" id="signUpError"></div>
+                <div class="auth-field">
+                    <label class="auth-label">Display Name</label>
+                    <input class="auth-input" id="signUpName" type="text" placeholder="How others will see you" autocomplete="name">
+                </div>
+                <div class="auth-field">
+                    <label class="auth-label">Username</label>
+                    <input class="auth-input" id="signUpUser" type="text" placeholder="Choose a unique handle" autocomplete="username">
+                </div>
+                <div class="auth-field">
+                    <label class="auth-label">Email</label>
+                    <input class="auth-input" id="signUpEmail" type="email" placeholder="your@email.com" autocomplete="email">
+                </div>
+                <div class="auth-field">
+                    <label class="auth-label">Password</label>
+                    <input class="auth-input" id="signUpPass" type="password" placeholder="At least 6 characters" autocomplete="new-password">
+                </div>
+                <div class="auth-field">
+                    <label class="auth-label">Confirm Password</label>
+                    <input class="auth-input" id="signUpPassConfirm" type="password" placeholder="Re-enter password" autocomplete="new-password" onkeydown="if(event.key==='Enter')doSignUp()">
+                </div>
+                <button class="auth-btn" onclick="doSignUp()">Create Account</button>
+                <div class="auth-switch">Already have an account? <a onclick="showSignIn()">Sign in</a></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="app" id="mainApp" style="display:none;">
         <!-- ═══ LEFT SIDEBAR ═══ -->
         <aside class="sidebar">
             <div class="logo">
@@ -3199,6 +3419,18 @@ Learn, explore, and stay informed. <span class="post-tag">#CyberWatch</span> <sp
                 </div>
             </div>
 
+            <!-- Account Actions -->
+            <div class="settings-section">
+                <div class="settings-section-title">Account</div>
+                <div class="settings-row">
+                    <div class="settings-label">
+                        <div class="settings-label-text">Sign Out</div>
+                        <div class="settings-label-desc">Log out of your CyberWatch account</div>
+                    </div>
+                    <button class="settings-danger-btn" style="border-color: var(--accent); background: var(--accent-dim); color: var(--accent);" onclick="doLogout()">Sign Out</button>
+                </div>
+            </div>
+
             <!-- Danger Zone -->
             <div class="settings-section">
                 <div class="settings-section-title" style="color: var(--red);">Danger Zone</div>
@@ -3497,13 +3729,15 @@ Learn, explore, and stay informed. <span class="post-tag">#CyberWatch</span> <sp
 
         if (!COMMENTS[postId]) COMMENTS[postId] = [];
 
+        const rHandle = window.CW_HANDLE || '@ArukuX';
+        const rProfile = PROFILES[rHandle] || {};
         COMMENTS[postId].unshift({
             id: 'c' + Date.now(),
-            author: 'ArukuX',
-            handle: '@ArukuX',
-            avatar: 'AX',
-            avatarColor: 'linear-gradient(135deg, #00d4ff, #a855f7)',
-            verified: true,
+            author: rProfile.name || 'User',
+            handle: rHandle,
+            avatar: rProfile.avatar || 'U',
+            avatarColor: rProfile.avatarColor || 'linear-gradient(135deg, #00d4ff, #2ed573)',
+            verified: rProfile.verified || false,
             text: text,
             time: 'just now',
             likes: 0
@@ -3737,13 +3971,15 @@ Learn, explore, and stay informed. <span class="post-tag">#CyberWatch</span> <sp
         const content = input.value.trim();
         if (!content) return;
 
+        const handle = window.CW_HANDLE || '@ArukuX';
+        const profile = PROFILES[handle] || {};
         const newPost = {
             id: Date.now(),
-            author: "ArukuX",
-            handle: "@ArukuX",
-            verified: true,
-            avatar: "AX",
-            avatarColor: "linear-gradient(135deg, #00d4ff, #a855f7)",
+            author: profile.name || 'User',
+            handle: handle,
+            verified: profile.verified || false,
+            avatar: profile.avatar || 'U',
+            avatarColor: profile.avatarColor || 'linear-gradient(135deg, #00d4ff, #2ed573)',
             time: "now",
             category: "cyber",
             content: escapeHtml(content).replace(/#(\w+)/g, '<span class="post-tag">#$1</span>'),
@@ -4590,8 +4826,207 @@ Learn, explore, and stay informed. <span class="post-tag">#CyberWatch</span> <sp
     PROFILES['@r_netsec'] = { name: 'r/netsec', handle: '@r_netsec', verified: true, avatar: 'NS', avatarColor: 'linear-gradient(135deg, #2ed573, #00d4ff)', bannerColor: 'linear-gradient(135deg, #001a0a, #002a1a, #001a0a)', bio: 'Information Security News and Discussion from Reddit.', location: 'Reddit', link: 'reddit.com/r/netsec', joined: 'January 2008', following: 0, followers: 800000, badges: ['verified'], category: 'cyber' };
     PROFILES['@r_cybersecurity'] = { name: 'r/cybersecurity', handle: '@r_cybersecurity', verified: true, avatar: 'RC', avatarColor: 'linear-gradient(135deg, #a855f7, #ff6b9d)', bannerColor: 'linear-gradient(135deg, #0a001a, #1a0030, #0a001a)', bio: 'Cybersecurity career advice, news, and discussion from Reddit.', location: 'Reddit', link: 'reddit.com/r/cybersecurity', joined: 'March 2011', following: 0, followers: 1200000, badges: ['verified'], category: 'cyber' };
 
-    // ═══ INIT ═══
-    document.addEventListener('DOMContentLoaded', () => {
+    // ═══ AUTH SYSTEM ═══
+
+    function getUsers() {
+        return JSON.parse(localStorage.getItem('cw_users') || '{}');
+    }
+
+    function saveUsers(users) {
+        localStorage.setItem('cw_users', JSON.stringify(users));
+    }
+
+    function getSession() {
+        return JSON.parse(localStorage.getItem('cw_session') || 'null');
+    }
+
+    function saveSession(session) {
+        localStorage.setItem('cw_session', JSON.stringify(session));
+    }
+
+    function showSignIn() {
+        document.getElementById('signInForm').style.display = '';
+        document.getElementById('signUpForm').style.display = 'none';
+        document.getElementById('signInError').classList.remove('visible');
+    }
+
+    function showSignUp() {
+        document.getElementById('signInForm').style.display = 'none';
+        document.getElementById('signUpForm').style.display = '';
+        document.getElementById('signUpError').classList.remove('visible');
+    }
+
+    function showAuthError(formId, msg) {
+        const el = document.getElementById(formId);
+        el.textContent = msg;
+        el.classList.add('visible');
+    }
+
+    function doSignUp() {
+        const name = document.getElementById('signUpName').value.trim();
+        const username = document.getElementById('signUpUser').value.trim().toLowerCase();
+        const email = document.getElementById('signUpEmail').value.trim();
+        const pass = document.getElementById('signUpPass').value;
+        const passConfirm = document.getElementById('signUpPassConfirm').value;
+
+        if (!name || !username || !email || !pass) {
+            return showAuthError('signUpError', 'All fields are required.');
+        }
+        if (username.length < 3) {
+            return showAuthError('signUpError', 'Username must be at least 3 characters.');
+        }
+        if (!/^[a-z0-9_]+$/.test(username)) {
+            return showAuthError('signUpError', 'Username can only contain letters, numbers, and underscores.');
+        }
+        if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+            return showAuthError('signUpError', 'Please enter a valid email address.');
+        }
+        if (pass.length < 6) {
+            return showAuthError('signUpError', 'Password must be at least 6 characters.');
+        }
+        if (pass !== passConfirm) {
+            return showAuthError('signUpError', 'Passwords do not match.');
+        }
+
+        const users = getUsers();
+        if (users[username]) {
+            return showAuthError('signUpError', 'Username already taken. Choose another.');
+        }
+
+        // Store user (hash password with simple encoding — not production-grade)
+        users[username] = {
+            name: name,
+            username: username,
+            email: email,
+            passHash: btoa(pass),
+            joined: new Date().toLocaleDateString('en-US', { month: 'long', year: 'numeric' }),
+            createdAt: Date.now()
+        };
+        saveUsers(users);
+
+        // Auto sign in
+        const session = { username: username, name: name, loggedInAt: Date.now() };
+        saveSession(session);
+
+        // Create their profile
+        const handle = '@' + username;
+        PROFILES[handle] = {
+            name: name,
+            handle: handle,
+            verified: false,
+            avatar: name.substring(0, 2).toUpperCase(),
+            avatarColor: 'linear-gradient(135deg, #00d4ff, #2ed573)',
+            bannerColor: 'linear-gradient(135deg, #000a1a, #001020, #000a1a)',
+            bio: 'New to CyberWatch. Learning and exploring cybersecurity.',
+            location: '',
+            link: '',
+            joined: users[username].joined,
+            following: 0,
+            followers: 0,
+            badges: [],
+            category: 'cyber'
+        };
+
+        addNotification('system', 'CyberWatch', '@system', 'Welcome! Complete your first lesson to earn XP.', null);
+        enterApp(session);
+    }
+
+    function doSignIn() {
+        const username = document.getElementById('signInUser').value.trim().toLowerCase();
+        const pass = document.getElementById('signInPass').value;
+
+        if (!username || !pass) {
+            return showAuthError('signInError', 'Please enter both username and password.');
+        }
+
+        const users = getUsers();
+        const user = users[username];
+
+        if (!user || atob(user.passHash) !== pass) {
+            return showAuthError('signInError', 'Invalid username or password.');
+        }
+
+        const session = { username: username, name: user.name, loggedInAt: Date.now() };
+        saveSession(session);
+
+        // Restore profile
+        const handle = '@' + username;
+        if (!PROFILES[handle]) {
+            PROFILES[handle] = {
+                name: user.name,
+                handle: handle,
+                verified: false,
+                avatar: user.name.substring(0, 2).toUpperCase(),
+                avatarColor: 'linear-gradient(135deg, #00d4ff, #2ed573)',
+                bannerColor: 'linear-gradient(135deg, #000a1a, #001020, #000a1a)',
+                bio: 'CyberWatch member.',
+                location: '',
+                link: '',
+                joined: user.joined,
+                following: 0,
+                followers: 0,
+                badges: [],
+                category: 'cyber'
+            };
+        }
+
+        enterApp(session);
+    }
+
+    function enterApp(session) {
+        document.getElementById('authScreen').classList.add('hidden');
+        document.getElementById('mainApp').style.display = '';
+
+        // Update UI with logged-in user identity
+        const handle = '@' + session.username;
+        const profile = PROFILES[handle];
+        const initials = session.name.substring(0, 2).toUpperCase();
+
+        // Update sidebar user card
+        const userCard = document.querySelector('.sidebar-footer .user-card');
+        if (userCard) {
+            userCard.innerHTML = `
+                <div class="avatar" style="background: ${profile ? profile.avatarColor : 'linear-gradient(135deg, #00d4ff, #2ed573)'};">${initials}</div>
+                <div class="user-info">
+                    <div class="user-name">${escapeHtml(session.name)}</div>
+                    <div class="user-handle">${escapeHtml(handle)}</div>
+                </div>
+            `;
+        }
+
+        // Update compose avatar
+        const composeAvatar = document.querySelector('.compose-area .avatar');
+        if (composeAvatar) {
+            composeAvatar.textContent = initials;
+            if (profile) composeAvatar.style.background = profile.avatarColor;
+        }
+
+        // Update profile nav to point to this user
+        const profileNav = document.querySelector('[data-page="profile"]');
+        if (profileNav) profileNav.setAttribute('onclick', "openProfile('" + handle + "')");
+
+        // Update mobile profile nav
+        const mobileProfileItems = document.querySelectorAll('.mobile-nav-item');
+        const lastMobile = mobileProfileItems[mobileProfileItems.length - 1];
+        if (lastMobile) lastMobile.setAttribute('onclick', "openProfile('" + handle + "')");
+
+        // Store current user handle for post authoring
+        window.CW_USER = session;
+        window.CW_HANDLE = handle;
+
+        initApp();
+    }
+
+    function doLogout() {
+        localStorage.removeItem('cw_session');
+        window.CW_USER = null;
+        window.CW_HANDLE = null;
+        document.getElementById('authScreen').classList.remove('hidden');
+        document.getElementById('mainApp').style.display = 'none';
+        showSignIn();
+    }
+
+    function initApp() {
         seedComments();
         renderShorts();
         renderPosts();
@@ -4602,12 +5037,36 @@ Learn, explore, and stay informed. <span class="post-tag">#CyberWatch</span> <sp
         updateXPDisplay();
         updateNotifBadge();
         applySettings();
-
-        // Load all live data in parallel
         loadAllLiveData();
+    }
+
+    // ═══ INIT ═══
+    document.addEventListener('DOMContentLoaded', () => {
+        // Check for existing session
+        const session = getSession();
+        if (session) {
+            // Restore profile if needed
+            const handle = '@' + session.username;
+            if (!PROFILES[handle]) {
+                const users = getUsers();
+                const user = users[session.username];
+                if (user) {
+                    PROFILES[handle] = {
+                        name: user.name, handle: handle, verified: false,
+                        avatar: user.name.substring(0, 2).toUpperCase(),
+                        avatarColor: 'linear-gradient(135deg, #00d4ff, #2ed573)',
+                        bannerColor: 'linear-gradient(135deg, #000a1a, #001020, #000a1a)',
+                        bio: 'CyberWatch member.', location: '', link: '',
+                        joined: user.joined, following: 0, followers: 0, badges: [], category: 'cyber'
+                    };
+                }
+            }
+            enterApp(session);
+        }
+        // If no session, auth screen is already visible
 
         // Refresh every 5 minutes
-        setInterval(loadAllLiveData, 5 * 60 * 1000);
+        setInterval(() => { if (window.CW_USER) loadAllLiveData(); }, 5 * 60 * 1000);
 
         // Close modal on Escape
         document.addEventListener('keydown', e => {
