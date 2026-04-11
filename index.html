@@ -219,6 +219,82 @@
         .avatar-sm { width: 32px; height: 32px; font-size: 13px; }
         .avatar-lg { width: 48px; height: 48px; font-size: 18px; }
 
+        /* Avatar with uploaded image — hides initials and shows photo */
+        .avatar.has-image, .profile-avatar.has-image {
+            background-size: cover !important;
+            background-position: center !important;
+            background-repeat: no-repeat;
+            color: transparent;
+            overflow: hidden;
+            text-indent: -9999px;
+        }
+        .profile-avatar.editable { cursor: pointer; position: relative; }
+        .profile-avatar.editable::after {
+            content: '\1F4F7';
+            position: absolute;
+            bottom: 2px;
+            right: 2px;
+            background: var(--accent, #00d4ff);
+            color: #000;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 15px;
+            border: 3px solid var(--bg, #000);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.5);
+            text-indent: 0;
+        }
+        .profile-avatar.editable:hover { transform: scale(1.02); }
+
+        /* Avatar editor modal */
+        .avatar-editor-preview {
+            width: 140px;
+            height: 140px;
+            border-radius: 50%;
+            margin: 0 auto 20px;
+            border: 3px solid var(--border, #2a2a2a);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 800;
+            font-size: 46px;
+            color: #000;
+            background-size: cover;
+            background-position: center;
+        }
+        .avatar-editor-btn {
+            background: var(--accent, #00d4ff);
+            color: #000;
+            font-weight: 700;
+            border: 0;
+            padding: 12px 22px;
+            border-radius: 24px;
+            cursor: pointer;
+            font-size: 14px;
+            margin: 0 4px;
+            transition: transform 0.15s ease, box-shadow 0.15s ease;
+        }
+        .avatar-editor-btn:hover { transform: translateY(-1px); box-shadow: 0 4px 12px rgba(0, 212, 255, 0.3); }
+        .avatar-editor-btn.secondary {
+            background: transparent;
+            color: var(--text-secondary, #8899a6);
+            border: 1px solid var(--border, #2a2a2a);
+        }
+        .avatar-editor-btn.danger {
+            background: transparent;
+            color: #ff4757;
+            border: 1px solid #ff4757;
+        }
+        .avatar-editor-error {
+            color: #ff4757;
+            font-size: 13px;
+            margin-top: 14px;
+            min-height: 16px;
+        }
+
         .user-info { flex: 1; min-width: 0; }
         .user-name { font-weight: 700; font-size: 14px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
         .user-handle { color: var(--text-secondary); font-size: 13px; }
@@ -2302,7 +2378,7 @@
 
             <div class="sidebar-footer">
                 <div class="user-card">
-                    <div class="avatar" style="background: linear-gradient(135deg, #00d4ff, #a855f7);">AX</div>
+                    <div class="avatar" data-my-avatar style="background: linear-gradient(135deg, #00d4ff, #a855f7);">AX</div>
                     <div class="user-info">
                         <div class="user-name">ArukuX &#x2713;</div>
                         <div class="user-handle">@ArukuX</div>
@@ -2344,7 +2420,7 @@
 
             <!-- Compose area -->
             <div class="compose-area">
-                <div class="avatar" style="background: linear-gradient(135deg, #00d4ff, #a855f7);">AX</div>
+                <div class="avatar" data-my-avatar style="background: linear-gradient(135deg, #00d4ff, #a855f7);">AX</div>
                 <textarea class="compose-input" id="composeInput" placeholder="Share intel, tips, or findings..." oninput="updateCompose()"></textarea>
             </div>
             <div class="compose-toolbar">
@@ -2895,6 +2971,193 @@ Learn, explore, and stay informed. <span class="post-tag">#CyberWatch</span> <sp
             category: "cyber"
         }
     };
+
+    // ═══════════════════════════════════════════════════════════════
+    // PROFILE PICTURE SYSTEM
+    // Lets users upload, resize, and persist a custom avatar image.
+    // Storage: localStorage key 'cw_avatar_<handle>' as JPEG data URL.
+    // Resize: client-side Canvas, 256x256, JPEG quality 0.85.
+    // ═══════════════════════════════════════════════════════════════
+
+    function getMyHandle() {
+        return window.CW_HANDLE || '@ArukuX';
+    }
+
+    function loadUserAvatarImage() {
+        try {
+            const handle = getMyHandle();
+            const img = localStorage.getItem('cw_avatar_' + handle);
+            if (img && PROFILES[handle]) {
+                PROFILES[handle].avatarImage = img;
+            }
+        } catch (e) { /* localStorage blocked or full */ }
+    }
+
+    function saveUserAvatarImage(dataUrl) {
+        try {
+            const handle = getMyHandle();
+            localStorage.setItem('cw_avatar_' + handle, dataUrl);
+            if (PROFILES[handle]) PROFILES[handle].avatarImage = dataUrl;
+            return true;
+        } catch (e) {
+            return false;
+        }
+    }
+
+    function clearUserAvatarImage() {
+        try {
+            const handle = getMyHandle();
+            localStorage.removeItem('cw_avatar_' + handle);
+            if (PROFILES[handle]) delete PROFILES[handle].avatarImage;
+        } catch (e) {}
+    }
+
+    // Refresh every [data-my-avatar] element in the DOM to match current profile
+    function refreshMyAvatarsInDOM() {
+        const handle = getMyHandle();
+        const me = PROFILES[handle];
+        if (!me) return;
+        document.querySelectorAll('[data-my-avatar]').forEach(el => {
+            if (me.avatarImage) {
+                el.classList.add('has-image');
+                el.style.background = '';
+                el.style.backgroundImage = "url('" + me.avatarImage + "')";
+                el.style.backgroundSize = 'cover';
+                el.style.backgroundPosition = 'center';
+                el.textContent = '';
+            } else {
+                el.classList.remove('has-image');
+                el.style.backgroundImage = '';
+                el.style.background = me.avatarColor || 'linear-gradient(135deg, #00d4ff, #a855f7)';
+                el.textContent = me.avatar || '?';
+            }
+        });
+    }
+
+    // Open the avatar editor modal
+    function openAvatarEditor() {
+        closeAvatarEditor();
+        const handle = getMyHandle();
+        const me = PROFILES[handle];
+        if (!me) return;
+        const currentImg = me.avatarImage || '';
+        const previewStyle = currentImg
+            ? "background-image: url('" + currentImg + "');"
+            : "background: " + me.avatarColor + ";";
+        const previewText = currentImg ? '' : (me.avatar || '?');
+
+        const modal = document.createElement('div');
+        modal.className = 'modal-overlay active';
+        modal.id = 'avatarEditorModal';
+        modal.innerHTML =
+            '<div class="modal" style="max-width: 440px; text-align: center;">' +
+                '<button class="modal-close" onclick="closeAvatarEditor()">&times;</button>' +
+                '<h2 style="margin: 0 0 8px; font-size: 22px;">Change Profile Picture</h2>' +
+                '<p style="color: var(--text-secondary); font-size: 13px; margin: 0 0 20px;">Upload an image from your device. Max 5MB. Auto-cropped to square and resized to 256&times;256.</p>' +
+                '<div id="avatarEditorPreview" class="avatar-editor-preview ' + (currentImg ? 'has-image' : '') + '" style="' + previewStyle + '">' + previewText + '</div>' +
+                '<input type="file" id="avatarFileInput" accept="image/*" style="display:none;" onchange="handleAvatarFile(event)">' +
+                '<div style="display: flex; gap: 8px; justify-content: center; flex-wrap: wrap;">' +
+                    '<button class="avatar-editor-btn" onclick="document.getElementById(\'avatarFileInput\').click()">Choose Image</button>' +
+                    (currentImg ? '<button class="avatar-editor-btn danger" onclick="removeAvatarImage()">Remove</button>' : '') +
+                    '<button class="avatar-editor-btn secondary" onclick="closeAvatarEditor()">Cancel</button>' +
+                '</div>' +
+                '<div id="avatarEditorError" class="avatar-editor-error"></div>' +
+            '</div>';
+        document.body.appendChild(modal);
+    }
+
+    function closeAvatarEditor() {
+        const m = document.getElementById('avatarEditorModal');
+        if (m) m.remove();
+    }
+
+    function handleAvatarFile(event) {
+        const file = event.target.files && event.target.files[0];
+        if (!file) return;
+        const err = document.getElementById('avatarEditorError');
+        if (err) err.textContent = '';
+
+        if (!file.type.startsWith('image/')) {
+            if (err) err.textContent = 'Please choose an image file.';
+            return;
+        }
+        if (file.size > 5 * 1024 * 1024) {
+            if (err) err.textContent = 'Image too large (max 5MB).';
+            return;
+        }
+
+        const reader = new FileReader();
+        reader.onload = function(e) { resizeAndSaveAvatar(e.target.result); };
+        reader.onerror = function() {
+            if (err) err.textContent = 'Could not read file.';
+        };
+        reader.readAsDataURL(file);
+    }
+
+    function resizeAndSaveAvatar(rawDataUrl) {
+        const err = document.getElementById('avatarEditorError');
+        const img = new Image();
+        img.onload = function() {
+            try {
+                const canvas = document.createElement('canvas');
+                const size = 256;
+                canvas.width = size;
+                canvas.height = size;
+                const ctx = canvas.getContext('2d');
+
+                // Centre-crop to square then scale
+                const minDim = Math.min(img.width, img.height);
+                const sx = (img.width - minDim) / 2;
+                const sy = (img.height - minDim) / 2;
+                ctx.drawImage(img, sx, sy, minDim, minDim, 0, 0, size, size);
+
+                const resized = canvas.toDataURL('image/jpeg', 0.85);
+                const ok = saveUserAvatarImage(resized);
+                if (!ok) {
+                    if (err) err.textContent = 'Could not save (storage full). Try a smaller image.';
+                    return;
+                }
+
+                // Update preview immediately
+                const preview = document.getElementById('avatarEditorPreview');
+                if (preview) {
+                    preview.classList.add('has-image');
+                    preview.style.backgroundImage = "url('" + resized + "')";
+                    preview.textContent = '';
+                }
+
+                // Propagate to all DOM avatars + re-render views
+                refreshMyAvatarsInDOM();
+                if (typeof currentProfile !== 'undefined' && currentProfile === getMyHandle()) {
+                    openProfile(getMyHandle());
+                }
+                if (typeof renderPosts === 'function') renderPosts();
+
+                if (typeof awardXP === 'function') {
+                    awardXP(10, 'Profile picture updated! +10 XP');
+                }
+
+                // Close after short delay so user sees the preview update
+                setTimeout(closeAvatarEditor, 400);
+            } catch (ex) {
+                if (err) err.textContent = 'Could not process image.';
+            }
+        };
+        img.onerror = function() {
+            if (err) err.textContent = 'Invalid image file.';
+        };
+        img.src = rawDataUrl;
+    }
+
+    function removeAvatarImage() {
+        clearUserAvatarImage();
+        refreshMyAvatarsInDOM();
+        if (typeof currentProfile !== 'undefined' && currentProfile === getMyHandle()) {
+            openProfile(getMyHandle());
+        }
+        if (typeof renderPosts === 'function') renderPosts();
+        closeAvatarEditor();
+    }
 
     // ═══ RENDERING FUNCTIONS ═══
 
@@ -3799,7 +4062,7 @@ Learn, explore, and stay informed. <span class="post-tag">#CyberWatch</span> <sp
             <!-- Reply box -->
             <div class="replying-to">Replying to <span>${escapeHtml(post.handle)}</span></div>
             <div class="reply-box">
-                <div class="avatar" style="background: linear-gradient(135deg, #00d4ff, #a855f7); width: 32px; height: 32px; font-size: 11px;">AX</div>
+                <div class="avatar" data-my-avatar style="background: linear-gradient(135deg, #00d4ff, #a855f7); width: 32px; height: 32px; font-size: 11px;">AX</div>
                 <textarea class="reply-input" id="replyInput" placeholder="Post your reply..." oninput="document.getElementById('replyBtn').disabled = !this.value.trim()"></textarea>
                 <button class="reply-submit" id="replyBtn" disabled onclick="submitReply(${postId})">Reply</button>
             </div>
@@ -3825,9 +4088,17 @@ Learn, explore, and stay informed. <span class="post-tag">#CyberWatch</span> <sp
             `;
         }
 
-        return comments.map(c => `
+        return comments.map(c => {
+            const cp = PROFILES[c.handle];
+            const cImg = cp && cp.avatarImage;
+            const cClass = cImg ? 'avatar has-image' : 'avatar';
+            const cStyle = cImg
+                ? `background-image: url('${cImg}'); width: 32px; height: 32px; font-size: 11px; cursor: pointer;`
+                : `background: ${c.avatarColor}; width: 32px; height: 32px; font-size: 11px; cursor: pointer;`;
+            const cInner = cImg ? '' : c.avatar;
+            return `
             <div class="comment">
-                <div class="avatar" style="background: ${c.avatarColor}; width: 32px; height: 32px; font-size: 11px; cursor: pointer;" onclick="openProfile('${c.handle}')">${c.avatar}</div>
+                <div class="${cClass}" style="${cStyle}" onclick="openProfile('${c.handle}')">${cInner}</div>
                 <div class="comment-body">
                     <div class="comment-meta">
                         <span class="comment-author" style="cursor: pointer;" onclick="openProfile('${c.handle}')">${escapeHtml(c.author)}</span>
@@ -3849,7 +4120,8 @@ Learn, explore, and stay informed. <span class="post-tag">#CyberWatch</span> <sp
                     </div>
                 </div>
             </div>
-        `).join('');
+            `;
+        }).join('');
     }
 
     function submitReply(postId) {
@@ -3917,13 +4189,23 @@ Learn, explore, and stay informed. <span class="post-tag">#CyberWatch</span> <sp
         }).join('');
 
         const postsArea = document.getElementById('feedPosts');
+        const isMe = handle === getMyHandle();
+        const avatarInner = profile.avatarImage ? '' : profile.avatar;
+        const avatarStyle = profile.avatarImage
+            ? `background-image: url('${profile.avatarImage}');`
+            : `background: ${profile.avatarColor};`;
+        const avatarClasses = `profile-avatar${profile.avatarImage ? ' has-image' : ''}${isMe ? ' editable' : ''}`;
+        const avatarClick = isMe ? 'onclick="openAvatarEditor()" title="Click to change picture"' : '';
+
         postsArea.innerHTML = `
             <div class="profile-banner" style="background: ${profile.bannerColor};"></div>
             <div class="profile-header">
                 <div class="profile-actions">
-                    <button class="profile-follow-btn" onclick="toggleProfileFollow(this)">Follow</button>
+                    ${isMe
+                        ? '<button class="profile-follow-btn" onclick="openAvatarEditor()">Edit Picture</button>'
+                        : '<button class="profile-follow-btn" onclick="toggleProfileFollow(this)">Follow</button>'}
                 </div>
-                <div class="profile-avatar" style="background: ${profile.avatarColor}">${profile.avatar}</div>
+                <div class="${avatarClasses}" style="${avatarStyle}" ${avatarClick}>${avatarInner}</div>
                 <div class="profile-name">
                     ${escapeHtml(profile.name)}
                     ${profile.verified ? '<span class="post-verified" style="font-size: 18px;">&#x2713;</span>' : ''}
@@ -4014,10 +4296,17 @@ Learn, explore, and stay informed. <span class="post-tag">#CyberWatch</span> <sp
     function renderSinglePost(post) {
         const isBookmarked = bookmarkedPosts.includes(post.id);
         const commentCount = (COMMENTS[post.id] || []).length + (post.replies || 0);
+        const authorProfile = PROFILES[post.handle];
+        const postAvatarImg = authorProfile && authorProfile.avatarImage;
+        const postAvatarClass = postAvatarImg ? 'avatar has-image' : 'avatar';
+        const postAvatarStyle = postAvatarImg
+            ? `background-image: url('${postAvatarImg}'); cursor: pointer;`
+            : `background: ${post.avatarColor}; cursor: pointer;`;
+        const postAvatarInner = postAvatarImg ? '' : post.avatar;
         return `
             <div class="post" data-category="${post.category}" onclick="openPostDetail(${post.id})">
                 <div class="post-header">
-                    <div class="avatar" style="background: ${post.avatarColor}; cursor: pointer;" onclick="event.stopPropagation(); openProfile('${post.handle}')">${post.avatar}</div>
+                    <div class="${postAvatarClass}" style="${postAvatarStyle}" onclick="event.stopPropagation(); openProfile('${post.handle}')">${postAvatarInner}</div>
                     <div style="flex: 1; min-width: 0;">
                         <div class="post-meta">
                             <span class="post-author" style="cursor: pointer;" onclick="event.stopPropagation(); openProfile('${post.handle}')">${escapeHtml(post.author)}</span>
@@ -5265,6 +5554,7 @@ Learn, explore, and stay informed. <span class="post-tag">#CyberWatch</span> <sp
     }
 
     function initApp() {
+        loadUserAvatarImage();  // must run before renderPosts so profile picture shows on first paint
         seedComments();
         renderShorts();
         renderPosts();
@@ -5275,6 +5565,7 @@ Learn, explore, and stay informed. <span class="post-tag">#CyberWatch</span> <sp
         updateXPDisplay();
         updateNotifBadge();
         applySettings();
+        refreshMyAvatarsInDOM();  // updates hardcoded sidebar/composer avatars
         loadAllLiveData();
     }
 
