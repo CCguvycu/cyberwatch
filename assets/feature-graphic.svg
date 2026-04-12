@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  CyberWatch — Google Play Store feature graphic
+  Spec: 1024 × 500 PNG, no text required by policy, but we include branding
+  Export to PNG via: inkscape feature-graphic.svg -o feature-graphic.png -w 1024 -h 500
+  Or: magick feature-graphic.svg -resize 1024x500 feature-graphic.png
+-->
+<svg xmlns="http://www.w3.org/2000/svg" width="1024" height="500" viewBox="0 0 1024 500">
+  <defs>
+    <!-- Deep background gradient: black → dark navy → black -->
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#000000"/>
+      <stop offset="50%" stop-color="#050a1a"/>
+      <stop offset="100%" stop-color="#000000"/>
+    </linearGradient>
+
+    <!-- Cyan → purple gradient for the brand stroke -->
+    <linearGradient id="brand" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#00d4ff"/>
+      <stop offset="100%" stop-color="#a855f7"/>
+    </linearGradient>
+
+    <!-- Subtle grid pattern for the "terminal" feel -->
+    <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+      <path d="M 40 0 L 0 0 0 40" fill="none" stroke="#0a0a1a" stroke-width="1"/>
+    </pattern>
+
+    <!-- Glow filter for the headline -->
+    <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="4" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+
+  <!-- Background layers -->
+  <rect width="1024" height="500" fill="url(#bg)"/>
+  <rect width="1024" height="500" fill="url(#grid)"/>
+
+  <!-- Decorative glyph circles (threat indicators) -->
+  <g opacity="0.15">
+    <circle cx="80"  cy="80"  r="6" fill="#ff4757"/>
+    <circle cx="180" cy="120" r="4" fill="#00d4ff"/>
+    <circle cx="140" cy="200" r="5" fill="#a855f7"/>
+    <circle cx="900" cy="100" r="5" fill="#00d4ff"/>
+    <circle cx="950" cy="180" r="4" fill="#ffa502"/>
+    <circle cx="840" cy="280" r="6" fill="#ff4757"/>
+    <circle cx="80"  cy="380" r="5" fill="#2ed573"/>
+    <circle cx="180" cy="420" r="4" fill="#00d4ff"/>
+    <circle cx="920" cy="400" r="5" fill="#ff6b9d"/>
+  </g>
+
+  <!-- Corner signature glyph ⟐ -->
+  <text x="40" y="460" font-family="Consolas, 'Courier New', monospace" font-size="22" fill="#00d4ff" opacity="0.5">⟐</text>
+
+  <!-- Top-left small label -->
+  <text x="80" y="80" font-family="Consolas, 'Courier New', monospace" font-size="16" fill="#00d4ff" letter-spacing="4">◈ CYBER · SEC · INTEL</text>
+
+  <!-- Headline: CYBERWATCH -->
+  <text x="512" y="230"
+        font-family="Arial Black, 'Helvetica Neue', sans-serif"
+        font-size="100"
+        font-weight="900"
+        fill="url(#brand)"
+        text-anchor="middle"
+        letter-spacing="2"
+        filter="url(#glow)">CYBERWATCH</text>
+
+  <!-- Subtitle -->
+  <text x="512" y="290"
+        font-family="Arial, sans-serif"
+        font-size="26"
+        fill="#e6e6e6"
+        text-anchor="middle"
+        letter-spacing="1">Live threat intel · CVEs · Lessons · CTFs</text>
+
+  <!-- Data source strip -->
+  <text x="512" y="340"
+        font-family="Consolas, 'Courier New', monospace"
+        font-size="16"
+        fill="#8899a6"
+        text-anchor="middle"
+        letter-spacing="2">HACKER NEWS · REDDIT · NVD · COINGECKO</text>
+
+  <!-- Bottom right tagline box -->
+  <rect x="810" y="430" width="180" height="40" rx="20" fill="#00d4ff"/>
+  <text x="900" y="456"
+        font-family="Arial, sans-serif"
+        font-size="16"
+        font-weight="700"
+        fill="#000"
+        text-anchor="middle">FREE · OFFLINE</text>
+</svg>
